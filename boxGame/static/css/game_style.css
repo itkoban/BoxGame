@@ -1,0 +1,57 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+canvas {
+    background: #ffffff;
+    display: block;
+    margin: 0 auto;
+}
+
+.redBoxZone {
+    background: #ff7474;
+    position: absolute;
+    display: block;
+}
+.greenBoxZone {
+    background: #90ff99;
+    position: absolute;
+    display: block;
+}
+.boxBase {
+    background: #ff0d0d;
+    position: absolute;
+    display: block;
+    width: 100px;
+    height: 50px;
+}
+.boxRed {
+    background: #ff0d0d;
+}
+.boxGreen {
+    background: #0dff21;
+}
+
+.droppable {
+
+}
+
+.draggable {
+
+}
+
+.score {
+
+}
+
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
