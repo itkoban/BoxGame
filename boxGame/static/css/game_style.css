@@ -13,11 +13,13 @@ canvas {
     background: #ff7474;
     position: absolute;
     display: block;
+    pointer-events:none
 }
 .greenBoxZone {
     background: #90ff99;
     position: absolute;
     display: block;
+    pointer-events:none
 }
 .boxBase {
     background: #ff0d0d;
@@ -34,7 +36,7 @@ canvas {
 }
 
 .droppable {
-
+    pointer-events:none
 }
 
 .draggable {
@@ -42,7 +44,7 @@ canvas {
 }
 
 .score {
-
+    pointer-events:none
 }
 
 
