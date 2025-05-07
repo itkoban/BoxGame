@@ -1,4 +1,5 @@
 
+// Block scroll and zoom
 document.addEventListener('mousedown', function(event){
   if (event.target.className.includes('noselect')) {
     event.preventDefault();
@@ -11,66 +12,41 @@ document.addEventListener('touchstart', function(event){
   }
 }, false);
 
+let startGameButton = null;
+let startScreen = null;
+
+const BOX_WIDTH = 100;
+const MAX_BOX_COUNT = 4;
+const ZONE_WIDTH = 150;
+const START_GAME_TIME = 10;
 
 let dragObject = null;
-
 let score = 0;
+let remainingTime = 0;
 
+let redBoxZone = null;
+let greenBoxZone = null;
+let scoreCounter = null;
+let timeCounter = null;
 
+let currentBoxCount = 0;
+let boxSpeed = 150;
 
-const BOX_WIDTH = 100
-const MAX_BOX_COUNT = 4
-const ZONE_WIDTH = 150
+let isSpawnActive = false;
+let lastGameLoopTick = Date.now();
 
-
-
-let currentBoxCount = 0
-let boxSpeed = 150
-
-let isSpawnActive = false
-
-let lastUpdate = Date.now();
-
-let redBoxZone = document.createElement('div');
-redBoxZone.classList.add("redBoxZone");
-redBoxZone.classList.add("droppable");
-redBoxZone.classList.add("noselect");
-redBoxZone.style.width = ZONE_WIDTH + 'px';
-redBoxZone.style.height = document.body.clientHeight + 'px';
-
-document.body.append(redBoxZone);
-
-let greenBoxZone = document.createElement('div');
-greenBoxZone.classList.add("greenBoxZone");
-greenBoxZone.classList.add("droppable");
-greenBoxZone.classList.add("noselect");
-greenBoxZone.style.width = ZONE_WIDTH + 'px';
-greenBoxZone.style.height = document.body.clientHeight + 'px';
-greenBoxZone.style.left = (document.body.clientWidth - ZONE_WIDTH) + 'px';
-
-document.body.append(greenBoxZone);
-
-
-let scoreCounter = document.createElement('div');
-scoreCounter.classList.add("score");
-scoreCounter.classList.add("noselect");
-scoreCounter.style.position = 'absolute';
-scoreCounter.style.left = (document.body.clientWidth / 2) + 'px';
-scoreCounter.innerHTML = 'Score is: 0';
-
-document.body.append(scoreCounter);
-
-
-setInterval(onTimerTick, 16);
+let gameLoopId = null;
 
 function trySpawnBox() {
-    if ( Math.floor(Math.random() * MAX_BOX_COUNT) >= currentBoxCount)
+    if ( !isSpawnActive ) return;
+
+    if ( Math.floor( Math.random() * MAX_BOX_COUNT ) >= currentBoxCount )
     {
         let boxElement = document.createElement('div');
         boxElement.classList.add("boxBase");
         boxElement.classList.add("draggable");
 
-        if (Boolean(Math.round(Math.random())))
+        if ( Boolean( Math.round( Math.random() ) ) )
         {
             boxElement.classList.add("boxRed");
         }
@@ -79,36 +55,36 @@ function trySpawnBox() {
             boxElement.classList.add("boxGreen");
         }
 
-
-
-        boxElement.style.left = (document.body.clientWidth / 3 + (ZONE_WIDTH * currentBoxCount)) + 'px';
+        boxElement.style.left = ( document.body.clientWidth / 3 + ( ZONE_WIDTH * currentBoxCount ) ) + 'px';
         currentBoxCount += 1;
 
-         boxElement.ontouchstart = function(e) {
+         boxElement.ontouchstart = function( e ) {
 
             dragObject = boxElement;
 
-            boxElement.ontouchmove = function(e) {
-                boxElement.style.left = (e.pageX - 50) + 'px';
-                boxElement.style.top = (e.pageY - 25) + 'px';
+            boxElement.ontouchmove = function( e ) {
+                boxElement.style.left = ( e.pageX - 50 ) + 'px';
+                boxElement.style.top = ( e.pageY - 25 ) + 'px';
             }
         }
-        boxElement.ontouchend = function(e) {
+
+        boxElement.ontouchend = function( e ) {
 
             boxElement.ontouchmove = null;
             dragObject = null;
         }
 
-        boxElement.onmousedown = function(e) {
+        boxElement.onmousedown = function( e ) {
 
             dragObject = boxElement;
 
-            boxElement.onmousemove = function(e) {
-                boxElement.style.left = (e.pageX - 50) + 'px';
-                boxElement.style.top = (e.pageY - 25) + 'px';
+            boxElement.onmousemove = function( e ) {
+                boxElement.style.left = ( e.pageX - 50 ) + 'px';
+                boxElement.style.top = ( e.pageY - 25 ) + 'px';
             }
         }
-        boxElement.onmouseup = function(e) {
+
+        boxElement.onmouseup = function( e ) {
 
             boxElement.onmousemove = null;
             dragObject = null;
@@ -116,10 +92,11 @@ function trySpawnBox() {
 
         document.body.append(boxElement);
     }
+
     isSpawnActive = false;
 }
 
-function moveBoxes(dt) {
+function moveBoxes( dt ) {
 
     let toDelete = []
 
@@ -198,17 +175,179 @@ function checkZones( dt ) {
     }
 }
 
-function onTimerTick() {
-    var currentTime = Date.now();
-    var dt = currentTime - lastUpdate;
-    lastUpdate = currentTime;
+function onGameTick()
+{
+    if ( remainingTime <= 0 )
+    {
+        stopGame();
+        return;
+    }
 
-    if (!isSpawnActive && currentBoxCount != MAX_BOX_COUNT)
+    let currentTick = Date.now();
+    let dt = currentTick - lastGameLoopTick;
+    lastGameLoopTick = currentTick;
+
+    if ( !isSpawnActive && currentBoxCount != MAX_BOX_COUNT )
     {
         setTimeout(trySpawnBox, 1000);
         isSpawnActive = true;
     }
+
     checkZones(dt)
     moveBoxes(dt);
+
+    remainingTime -= dt / 1000;
+    timeCounter.innerHTML = remainingTime;
 }
 
+function startGame()
+{
+    remainingTime = START_GAME_TIME;
+
+    startGameButton.remove();
+    startGameButton = null;
+
+    startScreen.remove();
+    startScreen = null;
+
+    if ( redBoxZone == null )
+    {
+        redBoxZone = document.createElement('div');
+
+        redBoxZone.classList.add("redBoxZone");
+        redBoxZone.classList.add("droppable");
+        redBoxZone.classList.add("noselect");
+        redBoxZone.style.width = ZONE_WIDTH + 'px';
+        redBoxZone.style.height = document.body.clientHeight + 'px';
+
+        document.body.append(redBoxZone);
+    }
+
+    if ( greenBoxZone == null )
+    {
+        greenBoxZone = document.createElement('div');
+
+        greenBoxZone.classList.add("greenBoxZone");
+        greenBoxZone.classList.add("droppable");
+        greenBoxZone.classList.add("noselect");
+        greenBoxZone.style.width = ZONE_WIDTH + 'px';
+        greenBoxZone.style.height = document.body.clientHeight + 'px';
+        greenBoxZone.style.left = (document.body.clientWidth - ZONE_WIDTH) + 'px';
+
+        document.body.append(greenBoxZone);
+    }
+
+    if ( scoreCounter == null )
+    {
+        scoreCounter = document.createElement('div');
+
+        scoreCounter.classList.add("score");
+        scoreCounter.classList.add("noselect");
+        scoreCounter.style.position = 'absolute';
+        scoreCounter.style.left = (document.body.clientWidth / 2) + 'px';
+        scoreCounter.innerHTML = 'Score is: 0';
+
+        document.body.append(scoreCounter);
+    }
+
+    if ( timeCounter == null )
+    {
+        timeCounter = document.createElement('div');
+
+        timeCounter.classList.add("score");
+        timeCounter.classList.add("noselect");
+        timeCounter.style.position = 'absolute';
+        timeCounter.style.left = (document.body.clientWidth - 200) + 'px';
+        timeCounter.innerHTML = remainingTime;
+
+        document.body.append(timeCounter);
+    }
+
+    //start game loop
+    if ( gameLoopId == null )
+    {
+        lastGameLoopTick = Date.now();
+        gameLoopId = setInterval(onGameTick, 16);
+    }
+}
+
+function stopGame()
+{
+
+    remainingTime = 0;
+
+    const collection = document.getElementsByClassName("boxBase");
+    let boxCountToDelete = collection.length;
+
+    for ( let i = boxCountToDelete - 1; i >= 0; i-- )
+    {
+        let currentBox = collection[i];
+        currentBox.remove();
+    }
+
+    dragObject = null;
+
+    if ( dragObject != null )
+    {
+        dragObject.remove();
+        dragObject = null;
+    }
+
+    isSpawnActive = false;
+    currentBoxCount = 0;
+
+    if ( redBoxZone != null )
+    {
+        redBoxZone.remove();
+        redBoxZone = null;
+    }
+
+    if ( greenBoxZone != null )
+    {
+        greenBoxZone.remove();
+        greenBoxZone = null;
+    }
+
+    if ( scoreCounter != null )
+    {
+        scoreCounter.remove();
+        scoreCounter = null;
+    }
+
+    if ( timeCounter != null )
+    {
+        timeCounter.remove();
+        timeCounter = null;
+    }
+
+    if ( gameLoopId != null )
+    {
+        clearInterval(gameLoopId);
+        gameLoopId = null;
+    }
+
+    initStartScreen();
+}
+
+function initStartScreen()
+{
+    if ( startScreen == null )
+    {
+        startScreen = document.createElement('div');
+        startScreen.classList.add("startScreenStyle");
+
+        document.body.append(startScreen);
+
+        if ( startGameButton == null )
+        {
+            startGameButton = document.createElement('button');
+            startGameButton.classList.add("startButtonStyle");
+            startGameButton.textContent = 'Начать игру';
+            startGameButton.onclick = startGame;
+
+            startScreen.append(startGameButton);
+        }
+    }
+}
+
+initStartScreen();
