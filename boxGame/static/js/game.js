@@ -58,33 +58,21 @@ function trySpawnBox() {
         boxElement.style.left = ( document.body.clientWidth / 3 + ( ZONE_WIDTH * currentBoxCount ) ) + 'px';
         currentBoxCount += 1;
 
-         boxElement.ontouchstart = function( e ) {
+        boxElement.ondragstart = () => false;
+
+        boxElement.onpointerdown = function( e ) {
 
             dragObject = boxElement;
 
-            boxElement.ontouchmove = function( e ) {
-                boxElement.style.left = ( e.pageX - 50 ) + 'px';
-                boxElement.style.top = ( e.pageY - 25 ) + 'px';
+            boxElement.setPointerCapture( e.pointerId )
+
+            boxElement.onpointermove = function( e ) {
+                boxElement.style.left = ( e.clientX - 50 ) + 'px';
+                boxElement.style.top = ( e.clientY - 25 ) + 'px';
             }
         }
 
-        boxElement.ontouchend = function( e ) {
-
-            boxElement.ontouchmove = null;
-            dragObject = null;
-        }
-
-        boxElement.onmousedown = function( e ) {
-
-            dragObject = boxElement;
-
-            boxElement.onmousemove = function( e ) {
-                boxElement.style.left = ( e.pageX - 50 ) + 'px';
-                boxElement.style.top = ( e.pageY - 25 ) + 'px';
-            }
-        }
-
-        boxElement.onmouseup = function( e ) {
+        boxElement.onpointerup = function( e ) {
 
             boxElement.onmousemove = null;
             dragObject = null;

@@ -22,6 +22,7 @@ body, html {
     pointer-events:none
 }
 .boxBase {
+    touch-action: none;
     background: #ff0d0d;
     position: absolute;
     display: block;
