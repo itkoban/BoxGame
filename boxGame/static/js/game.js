@@ -15,10 +15,20 @@ document.addEventListener('touchstart', function(event){
 let startGameButton = null;
 let startScreen = null;
 
+let tutorialBoxRight = null;
+let tutorialBoxLeft = null;
+let tutorialTextRight = null;
+let tutorialTextLeft = null;
+let tutorialArrowRight = null;
+let tutorialArrowLeft = null;
+let tutorialStartButton = null;
+let tutorialText = null;
+let tutorialScreen = null;
+
 const BOX_WIDTH = 100;
 const MAX_BOX_COUNT = 4;
 const ZONE_WIDTH = 150;
-const START_GAME_TIME = 10;
+const START_GAME_TIME = 120;
 
 let dragObject = null;
 let score = 0;
@@ -74,7 +84,7 @@ function trySpawnBox() {
 
         boxElement.onpointerup = function( e ) {
 
-            boxElement.onmousemove = null;
+            boxElement.onpointermove = null;
             dragObject = null;
         }
 
@@ -192,11 +202,7 @@ function startGame()
 {
     remainingTime = START_GAME_TIME;
 
-    startGameButton.remove();
-    startGameButton = null;
-
-    startScreen.remove();
-    startScreen = null;
+    deleteTutorialScreen();
 
     if ( redBoxZone == null )
     {
@@ -317,23 +323,148 @@ function stopGame()
     initStartScreen();
 }
 
+function deleteStartScreen()
+{
+    startGameButton.remove();
+    startGameButton = null;
+
+    startScreen.remove();
+    startScreen = null;
+}
+
 function initStartScreen()
 {
     if ( startScreen == null )
     {
         startScreen = document.createElement('div');
-        startScreen.classList.add("startScreenStyle");
+        startScreen.classList.add("startScreen");
 
         document.body.append(startScreen);
 
         if ( startGameButton == null )
         {
             startGameButton = document.createElement('button');
-            startGameButton.classList.add("startButtonStyle");
+            startGameButton.classList.add("startButton");
             startGameButton.textContent = 'Начать игру';
-            startGameButton.onclick = startGame;
+            startGameButton.onclick = moveToTutorial;
 
             startScreen.append(startGameButton);
+        }
+    }
+}
+
+function moveToTutorial()
+{
+    deleteStartScreen();
+    initTutorialScreen();
+}
+
+function deleteTutorialScreen()
+{
+    tutorialBoxRight.remove();
+    tutorialBoxRight = null;
+
+    tutorialBoxLeft.remove();
+    tutorialBoxLeft = null;
+
+    tutorialTextRight.remove();
+    tutorialTextRight = null;
+
+    tutorialTextLeft.remove();
+    tutorialTextLeft = null;
+
+    tutorialArrowRight.remove();
+    tutorialArrowRight = null;
+
+    tutorialArrowLeft.remove();
+    tutorialArrowLeft = null;
+
+    tutorialStartButton.remove();
+    tutorialStartButton = null;
+
+    tutorialText.remove();
+    tutorialText = null;
+
+    tutorialScreen.remove();
+    tutorialScreen = null;
+}
+
+function initTutorialScreen()
+{
+    if ( tutorialScreen == null )
+    {
+        tutorialScreen = document.createElement('div');
+        tutorialScreen.classList.add("tutorialScreen");
+
+        document.body.append(tutorialScreen);
+
+        if ( tutorialText == null )
+        {
+            tutorialText = document.createElement('div');
+            tutorialText.classList.add("tutorialText");
+            tutorialText.textContent = 'Наберите как можно больше очков за 2 минуты, сортируя коробки на пустые и полные';
+
+            tutorialScreen.append(tutorialText);
+        }
+
+        if ( tutorialStartButton == null )
+        {
+            tutorialStartButton = document.createElement('button');
+            tutorialStartButton.classList.add("tutorialStartButton");
+            tutorialStartButton.textContent = 'СТАРТ!';
+            tutorialStartButton.onclick = startGame;
+
+            tutorialScreen.append(tutorialStartButton);
+        }
+
+        if ( tutorialArrowLeft == null )
+        {
+            tutorialArrowLeft = document.createElement('div');
+            tutorialArrowLeft.classList.add("tutorialArrowLeft");
+
+            tutorialScreen.append(tutorialArrowLeft);
+        }
+
+        if ( tutorialArrowRight == null )
+        {
+            tutorialArrowRight = document.createElement('div');
+            tutorialArrowRight.classList.add("tutorialArrowRight");
+
+            tutorialScreen.append(tutorialArrowRight);
+        }
+
+         if ( tutorialTextLeft == null )
+        {
+            tutorialTextLeft = document.createElement('div');
+            tutorialTextLeft.classList.add("tutorialTextLeft");
+            tutorialTextLeft.textContent = 'пустые коробки';
+
+            tutorialScreen.append(tutorialTextLeft);
+        }
+
+        if ( tutorialTextRight == null )
+        {
+            tutorialTextRight = document.createElement('div');
+            tutorialTextRight.classList.add("tutorialTextRight");
+            tutorialTextRight.textContent = 'полные коробки';
+
+            tutorialScreen.append(tutorialTextRight);
+        }
+
+        if ( tutorialBoxLeft == null )
+        {
+            tutorialBoxLeft = document.createElement('div');
+            tutorialBoxLeft.classList.add("tutorialBoxLeft");
+
+            tutorialScreen.append(tutorialBoxLeft);
+        }
+
+        if ( tutorialBoxRight == null )
+        {
+            tutorialBoxRight = document.createElement('div');
+            tutorialBoxRight.classList.add("tutorialBoxRight");
+
+            tutorialScreen.append(tutorialBoxRight);
         }
     }
 }

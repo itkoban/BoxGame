@@ -59,13 +59,13 @@ body, html {
                                   supported by Chrome and Opera */
 }
 
-.startScreenStyle {
+.startScreen {
     background-image: url("/static/images/start_screen.jpg");
     width: 100%;
     height: 100%;
 }
 
-.startButtonStyle {
+.startButton {
     width: 722px;
     height: 184px;
     display: block;
@@ -73,8 +73,106 @@ body, html {
     border-radius: 170px;
     position: absolute;
     background-color: #FFFFFF;
-    top: 648px;
+    top: 740px;
     left: 599px;
     text-align: center;
-    font-size: 73px;
+    font-size: 90px;
+}
+
+.tutorialScreen {
+    width: 100%;
+    height: 100%;
+}
+
+.tutorialText {
+    display: block;
+    position: absolute;
+    font-size: 50px;
+    width: 1180px;
+    height: 128px;
+    text-align: center;
+    top: 94px;
+    left: 369px;
+    color: #ffffff;
+}
+
+.tutorialStartButton {
+    width: 368px;
+    height: 154px;
+    display: block;
+    border: none;
+    border-radius: 170px;
+    position: absolute;
+    background-color: #63C879;
+    color: #ffffff;
+    top: 839px;
+    left: 757px;
+    text-align: center;
+    font-size: 60px;
+}
+
+.tutorialArrowLeft {
+    width: 506px;
+    height: 82px;
+    background-image: url("/static/images/arrow_left.png");
+    display: block;
+    position: absolute;
+    top: 673px;
+    left: 157px;
+    transform: translate(0, -50%);
+}
+
+.tutorialArrowRight {
+    width: 506px;
+    height: 82px;
+    background-image: url("/static/images/arrow_right.png");
+    display: block;
+    position: absolute;
+    top: 673px;
+    left: 1229px;
+    transform: translate(0, -50%);
+}
+
+.tutorialTextLeft {
+    width: 314px;
+    height: 73px;
+    display: block;
+    position: absolute;
+    top: 577px;
+    left: 343px;
+    text-align: right;
+    color: #ffffff;
+    font-size: 40px;
+}
+
+.tutorialTextRight {
+    width: 321px;
+    height: 73px;
+    display: block;
+    position: absolute;
+    top: 577px;
+    left: 1229px;
+    color: #ffffff;
+    text-align: left;
+    font-size: 40px;
+}
+
+.tutorialBoxLeft {
+    width: 241px;
+    height: 128px;
+    background-image: url("/static/images/empty_box.png");
+    display: block;
+    position: absolute;
+    top: 427px;
+    left: 416px;
+}
+
+.tutorialBoxRight {
+    width: 241px;
+    height: 173px;
+    background-image: url("/static/images/full_box.png");
+    display: block;
+    position: absolute;
+    top: 382px;
+    left: 1229px;
 }
