@@ -26,8 +26,27 @@ body, html {
     background-image: url("/static/images/full_box.png");
 }
 
-.score {
+.scoreCounter {
     pointer-events:none;
+    width: 226px;
+    display: block;
+    border: none;
+    position: absolute;
+    color: #ffffff;
+    top: 37px;
+    left: 155px;
+    text-align: center;
+    font-size: 73px;
+}
+
+.scoreBox {
+    width: 92px;
+    height: 48px;
+    background-image: url("/static/images/counter_box.png");
+    display: block;
+    position: absolute;
+    top: 58px;
+    left: 95px;
 }
 
 .timeCounter {

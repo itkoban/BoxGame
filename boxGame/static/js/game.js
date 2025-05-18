@@ -42,6 +42,7 @@ let score = 0;
 let remainingTime = 0;
 
 let scoreCounter = null;
+let scoreBox = null;
 let timeCounter = null;
 let counterToStart = null;
 
@@ -55,10 +56,32 @@ let lastGameLoopTick = Date.now();
 
 let gameLoopId = null;
 
-function getRandomInt( min, max ) {
-  const minCeiled = Math.ceil(min);
-  const maxFloored = Math.floor(max);
-  return Math.floor( Math.random() * ( maxFloored - minCeiled + 1 ) + minCeiled );
+function getRandomInt( min, max )
+{
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+
+    return Math.floor( Math.random() * ( maxFloored - minCeiled + 1 ) + minCeiled );
+}
+
+function getScoreInStr()
+{
+    if ( score < 10 )
+    {
+        return '000' + score;
+    }
+
+    if ( score < 100 )
+    {
+        return '00' + score;
+    }
+
+    if ( score < 1000 )
+    {
+        return '0' + score;
+    }
+
+    return '' + score;
 }
 
 function secToMinSecFormat ( seconds )
@@ -88,7 +111,6 @@ function secToMinSecFormat ( seconds )
     }
 
     return minsStr + ':' + secsStr;
-
 }
 
 function trySpawnBox() {
@@ -200,7 +222,7 @@ function checkZones( dt ) {
         }
     }
 
-    document.getElementsByClassName("score")[0].textContent = 'Score is: ' + score;
+    scoreCounter.textContent = getScoreInStr();
 
     for ( let i = 0; i < toDelete.length; i++ )
     {
@@ -251,6 +273,7 @@ function onGameTick()
 function startGame()
 {
     remainingTime = START_GAME_TIME;
+    score = 0;
 
     deleteTutorialScreen();
 
@@ -258,13 +281,21 @@ function startGame()
     {
         scoreCounter = document.createElement('div');
 
-        scoreCounter.classList.add("score");
+        scoreCounter.classList.add("scoreCounter");
         scoreCounter.classList.add("noselect");
-        scoreCounter.style.position = 'absolute';
-        scoreCounter.style.left = (document.body.clientWidth / 2) + 'px';
-        scoreCounter.textContent = 'Score is: 0';
+        scoreCounter.textContent = getScoreInStr();
 
         document.body.append(scoreCounter);
+    }
+
+    if ( scoreBox == null )
+    {
+        scoreBox = document.createElement('div');
+
+        scoreBox.classList.add("scoreBox");
+        scoreBox.classList.add("noselect");
+
+        document.body.append(scoreBox);
     }
 
     if ( timeCounter == null )
@@ -353,6 +384,12 @@ function stopGame()
     {
         scoreCounter.remove();
         scoreCounter = null;
+    }
+
+    if ( scoreBox != null )
+    {
+        scoreBox.remove();
+        scoreBox = null;
     }
 
     if ( timeCounter != null )
