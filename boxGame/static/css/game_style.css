@@ -9,18 +9,6 @@ body, html {
     overflow:hidden;
 }
 
-.redBoxZone {
-    background: #ff7474;
-    position: absolute;
-    display: block;
-    pointer-events:none
-}
-.greenBoxZone {
-    background: #90ff99;
-    position: absolute;
-    display: block;
-    pointer-events:none
-}
 .boxBase {
     touch-action: none;
     background: #ff0d0d;
@@ -29,25 +17,46 @@ body, html {
     width: 100px;
     height: 50px;
 }
+
 .boxRed {
     background: #ff0d0d;
 }
+
 .boxGreen {
     background: #0dff21;
 }
 
-.droppable {
-    pointer-events:none
-}
-
-.draggable {
-
-}
-
 .score {
-    pointer-events:none
+    pointer-events:none;
 }
 
+.timeCounter {
+    pointer-events:none;
+    width: 267px;
+    display: block;
+    border: none;
+    position: absolute;
+    color: #ffffff;
+    border-radius: 50px;
+    background-color: #6337F3;
+    top: 37px;
+    left: 1571px;
+    text-align: center;
+    font-size: 73px;
+}
+
+.counterToStart {
+    display: block;
+    border: none;
+    position: absolute;
+    color: #ffffff;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    font-size: 950px;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+}
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */

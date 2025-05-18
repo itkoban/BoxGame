@@ -26,18 +26,24 @@ let tutorialText = null;
 let tutorialScreen = null;
 
 const BOX_WIDTH = 100;
+const BOX_HEIGHT = 50;
+const BOX_WIDTH_HALF = 50;
+const BOX_HEIGHT_HALF = 25;
+
 const MAX_BOX_COUNT = 4;
 const ZONE_WIDTH = 150;
 const START_GAME_TIME = 120;
+const DELAY_GAME_TIME = 3;
 
 let dragObject = null;
 let score = 0;
 let remainingTime = 0;
 
-let redBoxZone = null;
-let greenBoxZone = null;
 let scoreCounter = null;
 let timeCounter = null;
+let counterToStart = null;
+
+let secondToStart = DELAY_GAME_TIME;
 
 let currentBoxCount = 0;
 let boxSpeed = 150;
@@ -47,6 +53,36 @@ let lastGameLoopTick = Date.now();
 
 let gameLoopId = null;
 
+function secToMinSecFormat ( seconds )
+{
+    let mins = Math.floor(seconds / 60);
+    let minsStr = '';
+
+    if ( mins < 10 )
+    {
+        minsStr = '0' + mins;
+    }
+    else
+    {
+        minsStr = '' + mins;
+    }
+
+    let secs = Math.floor(seconds % 60);
+    let secsStr = '';
+
+    if ( secs < 10 )
+    {
+        secsStr = '0' + secs;
+    }
+    else
+    {
+        secsStr = '' + secs;
+    }
+
+    return minsStr + ':' + secsStr;
+
+}
+
 function trySpawnBox() {
     if ( !isSpawnActive ) return;
 
@@ -54,7 +90,6 @@ function trySpawnBox() {
     {
         let boxElement = document.createElement('div');
         boxElement.classList.add("boxBase");
-        boxElement.classList.add("draggable");
 
         if ( Boolean( Math.round( Math.random() ) ) )
         {
@@ -77,8 +112,8 @@ function trySpawnBox() {
             boxElement.setPointerCapture( e.pointerId )
 
             boxElement.onpointermove = function( e ) {
-                boxElement.style.left = ( e.clientX - 50 ) + 'px';
-                boxElement.style.top = ( e.clientY - 25 ) + 'px';
+                boxElement.style.left = ( e.clientX - BOX_WIDTH_HALF ) + 'px';
+                boxElement.style.top = ( e.clientY - BOX_HEIGHT_HALF ) + 'px';
             }
         }
 
@@ -110,7 +145,7 @@ function moveBoxes( dt ) {
         let currentY = currentBox.getBoundingClientRect().top
         let newY = currentY + boxSpeed * dt / 1000;
 
-        if ( (newY + 50) > document.body.clientHeight )
+        if ( (newY + BOX_HEIGHT) > document.body.clientHeight )
         {
             toDelete.push(currentBox)
         }
@@ -157,7 +192,7 @@ function checkZones( dt ) {
         }
     }
 
-    document.getElementsByClassName("score")[0].innerHTML = 'Score is: ' + score;
+    document.getElementsByClassName("score")[0].textContent = 'Score is: ' + score;
 
     for ( let i = 0; i < toDelete.length; i++ )
     {
@@ -195,7 +230,13 @@ function onGameTick()
     moveBoxes(dt);
 
     remainingTime -= dt / 1000;
-    timeCounter.innerHTML = remainingTime;
+
+    if ( remainingTime < 15.0 )
+    {
+        timeCounter.style.backgroundColor = '#F80000'
+    }
+
+    timeCounter.textContent = secToMinSecFormat( remainingTime );
 }
 
 function startGame()
@@ -203,33 +244,6 @@ function startGame()
     remainingTime = START_GAME_TIME;
 
     deleteTutorialScreen();
-
-    if ( redBoxZone == null )
-    {
-        redBoxZone = document.createElement('div');
-
-        redBoxZone.classList.add("redBoxZone");
-        redBoxZone.classList.add("droppable");
-        redBoxZone.classList.add("noselect");
-        redBoxZone.style.width = ZONE_WIDTH + 'px';
-        redBoxZone.style.height = document.body.clientHeight + 'px';
-
-        document.body.append(redBoxZone);
-    }
-
-    if ( greenBoxZone == null )
-    {
-        greenBoxZone = document.createElement('div');
-
-        greenBoxZone.classList.add("greenBoxZone");
-        greenBoxZone.classList.add("droppable");
-        greenBoxZone.classList.add("noselect");
-        greenBoxZone.style.width = ZONE_WIDTH + 'px';
-        greenBoxZone.style.height = document.body.clientHeight + 'px';
-        greenBoxZone.style.left = (document.body.clientWidth - ZONE_WIDTH) + 'px';
-
-        document.body.append(greenBoxZone);
-    }
 
     if ( scoreCounter == null )
     {
@@ -239,7 +253,7 @@ function startGame()
         scoreCounter.classList.add("noselect");
         scoreCounter.style.position = 'absolute';
         scoreCounter.style.left = (document.body.clientWidth / 2) + 'px';
-        scoreCounter.innerHTML = 'Score is: 0';
+        scoreCounter.textContent = 'Score is: 0';
 
         document.body.append(scoreCounter);
     }
@@ -248,16 +262,52 @@ function startGame()
     {
         timeCounter = document.createElement('div');
 
-        timeCounter.classList.add("score");
+        timeCounter.classList.add("timeCounter");
         timeCounter.classList.add("noselect");
-        timeCounter.style.position = 'absolute';
-        timeCounter.style.left = (document.body.clientWidth - 200) + 'px';
-        timeCounter.innerHTML = remainingTime;
+        timeCounter.textContent = secToMinSecFormat( remainingTime );
 
         document.body.append(timeCounter);
     }
 
-    //start game loop
+    if ( counterToStart == null )
+    {
+        counterToStart = document.createElement('div');
+
+        counterToStart.classList.add("counterToStart");
+        counterToStart.classList.add("noselect");
+        counterToStart.textContent = secondToStart;
+
+        document.body.append(counterToStart);
+
+        setTimeout(countTimeToStartGame, 1000);
+    }
+
+
+}
+
+function countTimeToStartGame() {
+    secondToStart -= 1;
+
+    if ( secondToStart == 0 )
+    {
+        counterToStart.remove()
+        counterToStart = null;
+
+        secondToStart = DELAY_GAME_TIME;
+
+        startGameLoop();
+    }
+    else
+    {
+        counterToStart.textContent = secondToStart;
+        setTimeout(countTimeToStartGame, 1000);
+    }
+}
+
+
+
+function startGameLoop()
+{
     if ( gameLoopId == null )
     {
         lastGameLoopTick = Date.now();
@@ -289,18 +339,6 @@ function stopGame()
 
     isSpawnActive = false;
     currentBoxCount = 0;
-
-    if ( redBoxZone != null )
-    {
-        redBoxZone.remove();
-        redBoxZone = null;
-    }
-
-    if ( greenBoxZone != null )
-    {
-        greenBoxZone.remove();
-        greenBoxZone = null;
-    }
 
     if ( scoreCounter != null )
     {
