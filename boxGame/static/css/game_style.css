@@ -11,19 +11,19 @@ body, html {
 
 .boxBase {
     touch-action: none;
-    background: #ff0d0d;
     position: absolute;
     display: block;
-    width: 100px;
-    height: 50px;
+    width: 241px;
+    height: 128px;
 }
 
-.boxRed {
-    background: #ff0d0d;
+.boxEmpty {
+    background-image: url("/static/images/empty_box.png");
 }
 
-.boxGreen {
-    background: #0dff21;
+.boxFull {
+    height: 173px;
+    background-image: url("/static/images/full_box.png");
 }
 
 .score {

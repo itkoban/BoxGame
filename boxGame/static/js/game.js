@@ -25,15 +25,17 @@ let tutorialStartButton = null;
 let tutorialText = null;
 let tutorialScreen = null;
 
-const BOX_WIDTH = 100;
-const BOX_HEIGHT = 50;
-const BOX_WIDTH_HALF = 50;
-const BOX_HEIGHT_HALF = 25;
+const BOX_WIDTH = 240;
+const BOX_HEIGHT = 128;
+const BOX_WIDTH_HALF = 120;
+const BOX_HEIGHT_HALF = 64;
 
 const MAX_BOX_COUNT = 4;
-const ZONE_WIDTH = 150;
+const ZONE_WIDTH = 350;
 const START_GAME_TIME = 120;
 const DELAY_GAME_TIME = 3;
+
+const CENTER_X = document.body.clientWidth / 2;
 
 let dragObject = null;
 let score = 0;
@@ -52,6 +54,12 @@ let isSpawnActive = false;
 let lastGameLoopTick = Date.now();
 
 let gameLoopId = null;
+
+function getRandomInt( min, max ) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor( Math.random() * ( maxFloored - minCeiled + 1 ) + minCeiled );
+}
 
 function secToMinSecFormat ( seconds )
 {
@@ -93,14 +101,14 @@ function trySpawnBox() {
 
         if ( Boolean( Math.round( Math.random() ) ) )
         {
-            boxElement.classList.add("boxRed");
+            boxElement.classList.add("boxEmpty");
         }
         else
         {
-            boxElement.classList.add("boxGreen");
+            boxElement.classList.add("boxFull");
         }
 
-        boxElement.style.left = ( document.body.clientWidth / 3 + ( ZONE_WIDTH * currentBoxCount ) ) + 'px';
+        boxElement.style.left = CENTER_X + ( getRandomInt(-1, 1) * BOX_WIDTH ) - BOX_WIDTH_HALF + 'px';
         currentBoxCount += 1;
 
         boxElement.ondragstart = () => false;
@@ -177,7 +185,7 @@ function checkZones( dt ) {
         if ( currentX < ZONE_WIDTH )
         {
             toDelete.push(currentBox)
-            if ( currentBox.classList.contains('boxRed') )
+            if ( currentBox.classList.contains('boxEmpty') )
             {
                 score += 5;
             }
@@ -185,7 +193,7 @@ function checkZones( dt ) {
         else if ( (currentX + BOX_WIDTH) > (document.body.clientWidth - ZONE_WIDTH) )
         {
             toDelete.push(currentBox)
-            if ( currentBox.classList.contains('boxGreen') )
+            if ( currentBox.classList.contains('boxFull') )
             {
                 score += 5;
             }
@@ -229,11 +237,12 @@ function onGameTick()
     checkZones(dt)
     moveBoxes(dt);
 
-    remainingTime -= dt / 1000;
+    let remainingTimeTemp = remainingTime - ( dt / 1000 );
+    remainingTime = Math.max( 0, remainingTimeTemp );
 
     if ( remainingTime < 15.0 )
     {
-        timeCounter.style.backgroundColor = '#F80000'
+        timeCounter.style.backgroundColor = '#F80000';
     }
 
     timeCounter.textContent = secToMinSecFormat( remainingTime );
