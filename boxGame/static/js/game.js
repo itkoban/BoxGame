@@ -172,15 +172,16 @@ function moveBoxes( dt ) {
 
         if ( currentBox == dragObject ) continue;
 
-        let currentY = currentBox.getBoundingClientRect().top
+        let currentY = currentBox.getBoundingClientRect().top;
+
         let newY = currentY + boxSpeed * dt / 1000;
 
         if ( (newY + BOX_HEIGHT) > document.body.clientHeight )
         {
-            toDelete.push(currentBox)
+            toDelete.push(currentBox);
         }
 
-        currentBox.style.top = newY
+        currentBox.style.top = newY;
     }
 
     for ( let i = 0; i < toDelete.length; i++ )

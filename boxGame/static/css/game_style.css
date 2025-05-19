@@ -1,3 +1,9 @@
+
+@font-face {
+    font-family: 'Hauss';
+    src: url("fonts/ALS_Hauss_Next_VF.ttf") format('truetype');
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -37,6 +43,7 @@ body, html {
     left: 155px;
     text-align: center;
     font-size: 73px;
+    font-family: 'Hauss';
 }
 
 .scoreBox {
@@ -62,6 +69,7 @@ body, html {
     left: 1571px;
     text-align: center;
     font-size: 73px;
+    font-family: 'Hauss';
 }
 
 .counterToStart {
@@ -75,6 +83,7 @@ body, html {
     font-size: 950px;
     z-index: 100;
     transform: translate(-50%, -50%);
+    font-family: 'Hauss';
 }
 
 .noselect {
@@ -105,6 +114,7 @@ body, html {
     left: 599px;
     text-align: center;
     font-size: 90px;
+    font-family: 'Hauss';
 }
 
 .tutorialScreen {
@@ -122,6 +132,7 @@ body, html {
     top: 94px;
     left: 369px;
     color: #ffffff;
+    font-family: 'Hauss';
 }
 
 .tutorialStartButton {
@@ -137,6 +148,7 @@ body, html {
     left: 757px;
     text-align: center;
     font-size: 60px;
+    font-family: 'Hauss';
 }
 
 .tutorialArrowLeft {
@@ -171,6 +183,7 @@ body, html {
     text-align: right;
     color: #ffffff;
     font-size: 40px;
+    font-family: 'Hauss';
 }
 
 .tutorialTextRight {
@@ -183,6 +196,7 @@ body, html {
     color: #ffffff;
     text-align: left;
     font-size: 40px;
+    font-family: 'Hauss';
 }
 
 .tutorialBoxLeft {
