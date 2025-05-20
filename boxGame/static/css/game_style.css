@@ -72,6 +72,36 @@ body, html {
     font-family: 'Hauss';
 }
 
+.textFullBox {
+    pointer-events:none;
+    width: 309px;
+    display: block;
+    border: none;
+    position: absolute;
+    color: #ffffff;
+    top: 549px;
+    left: 1561px;
+    text-align: center;
+    font-size: 73px;
+    opacity: 0.4;
+    font-family: 'Hauss';
+}
+
+.textEmptyBox {
+    pointer-events:none;
+    width: 267px;
+    display: block;
+    border: none;
+    position: absolute;
+    color: #ffffff;
+    top: 549px;
+    left: 50px;
+    text-align: center;
+    font-size: 73px;
+    opacity: 0.4;
+    font-family: 'Hauss';
+}
+
 .counterToStart {
     display: block;
     border: none;

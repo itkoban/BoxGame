@@ -45,6 +45,8 @@ let scoreCounter = null;
 let scoreBox = null;
 let timeCounter = null;
 let counterToStart = null;
+let textFullBox = null;
+let textEmptyBox = null;
 
 let secondToStart = DELAY_GAME_TIME;
 
@@ -253,7 +255,7 @@ function onGameTick()
 
     if ( !isSpawnActive && currentBoxCount != MAX_BOX_COUNT )
     {
-        setTimeout(trySpawnBox, 1000);
+        setTimeout(trySpawnBox, 500);
         isSpawnActive = true;
     }
 
@@ -308,6 +310,28 @@ function startGame()
         timeCounter.textContent = secToMinSecFormat( remainingTime );
 
         document.body.append(timeCounter);
+    }
+
+    if ( textFullBox == null )
+    {
+        textFullBox = document.createElement('div');
+
+        textFullBox.classList.add("textFullBox");
+        textFullBox.classList.add("noselect");
+        textFullBox.textContent = 'ПОЛНЫЕ';
+
+        document.body.append(textFullBox);
+    }
+
+    if ( textEmptyBox == null )
+    {
+        textEmptyBox = document.createElement('div');
+
+        textEmptyBox.classList.add("textEmptyBox");
+        textEmptyBox.classList.add("noselect");
+        textEmptyBox.textContent = 'ПУСТЫЕ';
+
+        document.body.append(textEmptyBox);
     }
 
     if ( counterToStart == null )
@@ -397,6 +421,18 @@ function stopGame()
     {
         timeCounter.remove();
         timeCounter = null;
+    }
+
+    if ( textFullBox != null )
+    {
+        textFullBox.remove();
+        textFullBox = null;
+    }
+
+    if ( textEmptyBox != null )
+    {
+        textEmptyBox.remove();
+        textEmptyBox = null;
     }
 
     if ( gameLoopId != null )
