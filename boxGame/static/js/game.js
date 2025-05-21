@@ -47,6 +47,7 @@ let timeCounter = null;
 let counterToStart = null;
 let textFullBox = null;
 let textEmptyBox = null;
+let timeIsUpScreen = null;
 
 let secondToStart = DELAY_GAME_TIME;
 
@@ -262,7 +263,7 @@ function onGameTick()
 {
     if ( remainingTime <= 0 )
     {
-        stopGame();
+        stopGameLoop();
         return;
     }
 
@@ -304,6 +305,7 @@ function startGame()
         scoreCounter.classList.add("scoreCounter");
         scoreCounter.classList.add("noselect");
         scoreCounter.textContent = getScoreInStr();
+        scoreCounter.style.opacity = 0.4;
 
         document.body.append(scoreCounter);
     }
@@ -314,6 +316,7 @@ function startGame()
 
         scoreBox.classList.add("scoreBox");
         scoreBox.classList.add("noselect");
+        scoreBox.style.opacity = 0.4;
 
         document.body.append(scoreBox);
     }
@@ -325,6 +328,7 @@ function startGame()
         timeCounter.classList.add("timeCounter");
         timeCounter.classList.add("noselect");
         timeCounter.textContent = secToMinSecFormat( remainingTime );
+        timeCounter.style.opacity = 0.4;
 
         document.body.append(timeCounter);
     }
@@ -377,6 +381,10 @@ function countTimeToStartGame() {
 
         secondToStart = DELAY_GAME_TIME;
 
+        scoreCounter.style.opacity = 1.0;
+        scoreBox.style.opacity = 1.0;
+        timeCounter.style.opacity = 1.0;
+
         startGameLoop();
     }
     else
@@ -397,11 +405,44 @@ function startGameLoop()
     }
 }
 
-function stopGame()
+function stopGameLoop()
 {
-
     remainingTime = 0;
 
+    if ( gameLoopId != null )
+    {
+        clearInterval(gameLoopId);
+        gameLoopId = null;
+    }
+
+    clearBoxes();
+
+    scoreCounter.style.opacity = 0.4;
+    scoreBox.style.opacity = 0.4;
+    timeCounter.style.opacity = 0.4;
+
+    if ( timeIsUpScreen == null )
+    {
+        timeIsUpScreen = document.createElement('div');
+
+        timeIsUpScreen.classList.add("timeIsUpScreen");
+        timeIsUpScreen.classList.add("noselect");
+
+        let timeIsUpText = document.createElement('div');
+        timeIsUpText.classList.add("timeIsUpText");
+        timeIsUpText.classList.add("noselect");
+        timeIsUpText.textContent = 'ВРЕМЯ ВЫШЛО';
+
+        timeIsUpScreen.append(timeIsUpText);
+
+        document.body.append(timeIsUpScreen);
+    }
+
+    setTimeout(stopGame, 3000);
+}
+
+function clearBoxes()
+{
     const collection = document.getElementsByClassName("boxBase");
     let boxCountToDelete = collection.length;
 
@@ -421,6 +462,14 @@ function stopGame()
 
     isSpawnActive = false;
     currentBoxCount = 0;
+}
+
+function stopGame()
+{
+
+    remainingTime = 0;
+
+    clearBoxes();
 
     if ( scoreCounter != null )
     {
@@ -452,10 +501,10 @@ function stopGame()
         textEmptyBox = null;
     }
 
-    if ( gameLoopId != null )
+    if ( timeIsUpScreen != null )
     {
-        clearInterval(gameLoopId);
-        gameLoopId = null;
+        timeIsUpScreen.remove();
+        timeIsUpScreen = null;
     }
 
     initStartScreen();

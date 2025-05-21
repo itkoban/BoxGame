@@ -114,6 +114,29 @@ body, html {
     font-family: 'Hauss';
 }
 
+.timeIsUpScreen {
+    pointer-events:none;
+    width: 764px;
+    height: 100%;
+    display: block;
+    position: absolute;
+    background-color: #63C879;
+    left: 578px;
+}
+
+.timeIsUpText {
+    pointer-events:none;
+    width: 536px;
+    display: block;
+    position: absolute;
+    color: #ffffff;
+    left: 114px;
+    top: 503px;
+    text-align: center;
+    font-size: 73px;
+    font-family: 'Hauss';
+}
+
 .counterToStart {
     display: block;
     border: none;
