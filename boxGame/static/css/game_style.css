@@ -272,6 +272,14 @@ body, html {
     position: absolute;
     top: 427px;
     left: 416px;
+    transition: all 0.5s ease;
+    animation: tutorialBoxLeft 3s linear infinite;
+}
+
+@keyframes tutorialBoxLeft {
+  to {
+    transform: translate(-300px, 0px);
+  }
 }
 
 .tutorialBoxRight {
@@ -282,4 +290,12 @@ body, html {
     position: absolute;
     top: 382px;
     left: 1229px;
+    transition: all 0.5s ease;
+    animation: tutorialBoxRight 3s linear infinite;
+}
+
+@keyframes tutorialBoxRight {
+  to {
+    transform: translate(300px, 0px);
+  }
 }
