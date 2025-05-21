@@ -18,16 +18,28 @@ body, html {
 .boxBase {
     touch-action: none;
     position: absolute;
-    display: block;
+    width: 241px;
+    height: 128px;
+
+}
+
+.boxEmptyContainer {
     width: 241px;
     height: 128px;
 }
 
+.boxFullContainer {
+
+}
+
 .boxEmpty {
+    width: 241px;
+    height: 128px;
     background-image: url("/static/images/empty_box.png");
 }
 
 .boxFull {
+    width: 241px;
     height: 173px;
     background-image: url("/static/images/full_box.png");
 }

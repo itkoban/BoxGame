@@ -30,7 +30,7 @@ const BOX_HEIGHT = 128;
 const BOX_WIDTH_HALF = 120;
 const BOX_HEIGHT_HALF = 64;
 
-const MAX_BOX_COUNT = 4;
+const MAX_BOX_COUNT = 5;
 const ZONE_WIDTH = 350;
 const START_GAME_TIME = 120;
 const DELAY_GAME_TIME = 3;
@@ -120,42 +120,57 @@ function trySpawnBox() {
 
     if ( Math.floor( Math.random() * MAX_BOX_COUNT ) >= currentBoxCount )
     {
-        let boxElement = document.createElement('div');
-        boxElement.classList.add("boxBase");
+        let boxContainer = document.createElement('div');
+        boxContainer.classList.add("boxBase");
+
+        let degree = getRandomInt( -90, 90 );
 
         if ( Boolean( Math.round( Math.random() ) ) )
         {
+            boxContainer.classList.add("boxEmptyContainer");
+
+            let boxElement = document.createElement('div');
             boxElement.classList.add("boxEmpty");
+            boxElement.style.transform = "rotate(" + degree + "deg)";
+            boxContainer.append(boxElement);
         }
         else
         {
+            boxContainer.classList.add("boxFullContainer");
+
+            let boxElement = document.createElement('div');
             boxElement.classList.add("boxFull");
+            boxElement.style.transform = "rotate(" + degree + "deg)";
+            boxContainer.append(boxElement);
         }
 
-        boxElement.style.left = CENTER_X + ( getRandomInt(-1, 1) * BOX_WIDTH ) - BOX_WIDTH_HALF + 'px';
+        boxContainer.style.left = CENTER_X + ( getRandomInt( -1, 1 ) * BOX_WIDTH ) - BOX_WIDTH_HALF + 'px';
+
+        let startY = Math.sin( degree * ( Math.PI / 180 ) ) * 250;
+
         currentBoxCount += 1;
 
-        boxElement.ondragstart = () => false;
+        boxContainer.ondragstart = () => false;
 
-        boxElement.onpointerdown = function( e ) {
+        boxContainer.onpointerdown = function( e ) {
 
-            dragObject = boxElement;
+            dragObject = boxContainer;
 
-            boxElement.setPointerCapture( e.pointerId )
+            boxContainer.setPointerCapture( e.pointerId )
 
-            boxElement.onpointermove = function( e ) {
-                boxElement.style.left = ( e.clientX - BOX_WIDTH_HALF ) + 'px';
-                boxElement.style.top = ( e.clientY - BOX_HEIGHT_HALF ) + 'px';
+            boxContainer.onpointermove = function( e ) {
+                boxContainer.style.left = ( e.clientX - BOX_WIDTH_HALF ) + 'px';
+                boxContainer.style.top = ( e.clientY - BOX_HEIGHT_HALF ) + 'px';
             }
         }
 
-        boxElement.onpointerup = function( e ) {
+        boxContainer.onpointerup = function( e ) {
 
-            boxElement.onpointermove = null;
+            boxContainer.onpointermove = null;
             dragObject = null;
         }
 
-        document.body.append(boxElement);
+        document.body.append(boxContainer);
     }
 
     isSpawnActive = false;
@@ -174,11 +189,13 @@ function moveBoxes( dt ) {
 
         if ( currentBox == dragObject ) continue;
 
-        let currentY = currentBox.getBoundingClientRect().top;
 
-        let newY = currentY + boxSpeed * dt / 1000;
+        let clientRect = currentBox.getBoundingClientRect();
+        let currentY = clientRect.top;
 
-        if ( (newY + BOX_HEIGHT) > document.body.clientHeight )
+        let newY = Math.max(currentY, 0) + boxSpeed * dt / 1000;
+
+        if ( ( newY + clientRect.height ) > document.body.clientHeight )
         {
             toDelete.push(currentBox);
         }
@@ -210,7 +227,7 @@ function checkZones( dt ) {
         if ( currentX < ZONE_WIDTH )
         {
             toDelete.push(currentBox)
-            if ( currentBox.classList.contains('boxEmpty') )
+            if ( currentBox.classList.contains('boxEmptyContainer') )
             {
                 score += 5;
             }
@@ -218,7 +235,7 @@ function checkZones( dt ) {
         else if ( (currentX + BOX_WIDTH) > (document.body.clientWidth - ZONE_WIDTH) )
         {
             toDelete.push(currentBox)
-            if ( currentBox.classList.contains('boxFull') )
+            if ( currentBox.classList.contains('boxFullContainer') )
             {
                 score += 5;
             }
