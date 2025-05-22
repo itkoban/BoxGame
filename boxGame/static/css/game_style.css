@@ -11,7 +11,6 @@
 
 body, html {
     height:100%;
-    background-color: #6337F3;
     overflow:hidden;
 }
 
@@ -55,6 +54,7 @@ body, html {
     left: 155px;
     text-align: center;
     font-size: 73px;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -65,7 +65,7 @@ body, html {
     display: block;
     position: absolute;
     top: 58px;
-    left: 95px;
+    left: 85px;
 }
 
 .timeCounter {
@@ -81,6 +81,7 @@ body, html {
     left: 1571px;
     text-align: center;
     font-size: 73px;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -96,6 +97,7 @@ body, html {
     text-align: center;
     font-size: 73px;
     opacity: 0.4;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -111,6 +113,7 @@ body, html {
     text-align: center;
     font-size: 73px;
     opacity: 0.4;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -134,6 +137,7 @@ body, html {
     top: 503px;
     text-align: center;
     font-size: 73px;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -148,6 +152,7 @@ body, html {
     font-size: 950px;
     z-index: 100;
     transform: translate(-50%, -50%);
+    font-weight: 700;
     font-family: 'Hauss';
 }
 
@@ -179,6 +184,7 @@ body, html {
     left: 599px;
     text-align: center;
     font-size: 90px;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -197,6 +203,7 @@ body, html {
     top: 94px;
     left: 369px;
     color: #ffffff;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -213,6 +220,7 @@ body, html {
     left: 757px;
     text-align: center;
     font-size: 60px;
+    font-weight: 700;
     font-family: 'Hauss';
 }
 
@@ -248,6 +256,7 @@ body, html {
     text-align: right;
     color: #ffffff;
     font-size: 40px;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -261,6 +270,7 @@ body, html {
     color: #ffffff;
     text-align: left;
     font-size: 40px;
+    font-weight: 720;
     font-family: 'Hauss';
 }
 
@@ -298,4 +308,81 @@ body, html {
   to {
     transform: translate(300px, 0px);
   }
+}
+
+.resultScoreText {
+    width: 336px;
+    display: block;
+    position: absolute;
+    top: 225px;
+    left: 792px;
+    text-align: center;
+    color: #6337F3;
+    font-size: 140px;
+    font-weight: 850;
+    font-family: 'Hauss';
+}
+
+.resultTryText {
+    width: 1006px;
+    height: 73px;
+    display: block;
+    position: absolute;
+    top: 92px;
+    left: 457px;
+    text-align: center;
+    color: #000000;
+    font-size: 60px;
+    font-weight: 720;
+    font-family: 'Hauss';
+}
+
+.resultScreenStartGameButton {
+    width: 510px;
+    height: 126px;
+    display: block;
+    border: none;
+    border-radius: 138px;
+    position: absolute;
+    background-color: #6337F3;
+    color: #ffffff;
+    top: 905px;
+    left: 705px;
+    text-align: center;
+    font-size: 60px;
+    font-weight: 720;
+    font-family: 'Hauss';
+}
+
+.resultScreenQR {
+    width: 456px;
+    height: 456px;
+    display: block;
+    position: absolute;
+    top: 400px;
+    left: 996px;
+}
+
+.resultScreenHint {
+    width: 538px;
+    height: 150px;
+    display: block;
+    border: none;
+    position: absolute;
+    top: 442px;
+    left: 471px;
+    text-align: left;
+    font-size: 40px;
+    font-weight: 400;
+    font-family: 'Hauss';
+}
+
+.resultScreenArrow {
+    width: 255px;
+    height: 87px;
+    background-image: url("/static/images/result_arrow.png");
+    display: block;
+    position: absolute;
+    top: 600px;
+    left: 720px;
 }

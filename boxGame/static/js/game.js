@@ -49,6 +49,13 @@ let textFullBox = null;
 let textEmptyBox = null;
 let timeIsUpScreen = null;
 
+let resultScoreText = null;
+let resultTryText = null;
+let resultScreenStartGameButton = null;
+let resultScreenQR = null;
+let resultScreenHint = null;
+let resultScreenArrow = null;
+
 let secondToStart = DELAY_GAME_TIME;
 
 let currentBoxCount = 0;
@@ -507,7 +514,7 @@ function stopGame()
         timeIsUpScreen = null;
     }
 
-    initStartScreen();
+    initResultScreen();
 }
 
 function deleteStartScreen()
@@ -521,6 +528,8 @@ function deleteStartScreen()
 
 function initStartScreen()
 {
+    document.body.style.backgroundColor = '#6337F3';
+
     if ( startScreen == null )
     {
         startScreen = document.createElement('div');
@@ -654,6 +663,104 @@ function initTutorialScreen()
             tutorialScreen.append(tutorialBoxRight);
         }
     }
+}
+
+function moveToStartScreen()
+{
+    deleteResultScreen();
+    initStartScreen();
+}
+
+function initResultScreen()
+{
+    document.body.style.backgroundColor = '#FFFFFF';
+
+    if ( resultTryText == null )
+    {
+        resultTryText = document.createElement('div');
+
+        resultTryText.classList.add("resultTryText");
+        resultTryText.classList.add("noselect");
+        resultTryText.textContent = 'Хорошая попытка! Ваш результат:';
+
+        document.body.append(resultTryText);
+    }
+
+    if ( resultScoreText == null )
+    {
+        resultScoreText = document.createElement('div');
+
+        resultScoreText.classList.add("resultScoreText");
+        resultScoreText.classList.add("noselect");
+        resultScoreText.textContent = getScoreInStr();
+
+        document.body.append(resultScoreText);
+    }
+
+    if ( resultScreenStartGameButton == null )
+    {
+        resultScreenStartGameButton = document.createElement('button');
+        resultScreenStartGameButton.classList.add("resultScreenStartGameButton");
+        resultScreenStartGameButton.textContent = 'СЫГРАТЬ ЕЩЕ!';
+        resultScreenStartGameButton.onclick = moveToStartScreen;
+
+        document.body.append(resultScreenStartGameButton);
+    }
+
+    if ( resultScreenQR == null )
+    {
+        resultScreenQR = document.createElement('div');
+        resultScreenQR.classList.add("resultScreenQR");
+
+        let qrcode = new QRCode(resultScreenQR, {
+         text: "https://www.google.ru/?hl=ru",
+         width: 456,
+         height: 456,
+         colorDark : "#000000",
+         colorLight : "#ffffff",
+         correctLevel : QRCode.CorrectLevel.H
+        });
+        document.body.append(resultScreenQR);
+    }
+
+    if ( resultScreenHint == null )
+    {
+        resultScreenHint = document.createElement('div');
+        resultScreenHint.classList.add("resultScreenHint");
+
+        resultScreenHint.innerHTML = 'Для <span style="color: #6337F3; font-weight: 720;">сохранения результата</span><br/>и <span style="color: #6337F3; font-weight: 720;">получения призов</span><br/>заполните форму'
+
+        document.body.append(resultScreenHint);
+    }
+
+    if ( resultScreenArrow == null )
+    {
+        resultScreenArrow = document.createElement('div');
+        resultScreenArrow.classList.add("resultScreenArrow");
+
+        document.body.append(resultScreenArrow);
+    }
+}
+
+function deleteResultScreen()
+{
+    resultScoreText.remove();
+    resultScoreText = null;
+
+    resultTryText.remove();
+    resultTryText = null;
+
+    resultScreenStartGameButton.remove();
+    resultScreenStartGameButton = null;
+
+    resultScreenQR.remove();
+    resultScreenQR = null;
+
+    resultScreenHint.remove();
+    resultScreenHint = null;
+
+    resultScreenArrow.remove();
+    resultScreenArrow = null;
 }
 
 initStartScreen();
