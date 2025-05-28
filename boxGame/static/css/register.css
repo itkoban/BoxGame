@@ -1,0 +1,50 @@
+
+@font-face {
+    font-family: 'Hauss';
+    src: url("fonts/ALS_Hauss_Next_VF.ttf") format('truetype');
+}
+
+.holeContainer {
+    width:100%;
+}
+
+.descText {
+    margin-top: 32px;
+    margin-bottom: 22px;
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 400;
+    font-family: 'Hauss';
+}
+
+.scoreText {
+    margin: 0 0 0 0;
+    width: 100%;
+    text-align: center;
+    font-size: 60px;
+    font-weight: 700;
+    font-family: 'Hauss';
+}
+
+.inputContainers {
+    display: table;
+    margin: 54px 0 0 0;
+    padding: 0 100px 0 100px;
+    max-width: 100%;
+}
+
+.inputBase {
+    display: table-cell;
+    vertical-align: middle;
+    margin: 0 0 20px 0;
+    padding: 0 0 0 20px;
+    width: 100%;
+    height: 60px;
+    border-radius: 20px;
+    background-color: #E9E9E9;
+    text-align: left;
+    font-size: 22px;
+    font-weight: 400;
+    font-family: 'Hauss';
+}

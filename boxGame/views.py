@@ -1,20 +1,21 @@
-from django.http import HttpResponse, Http404
 from django.shortcuts import render
-from django.template import loader
-from django.template.exceptions import TemplateDoesNotExist
+from django.http import HttpResponseNotFound, HttpResponse, Http404
+
 
 def index(request):
-
     return render(request, "game.html")
 
 
-def about(request, name, age):
-    return HttpResponse(f"""
-            <h2>О пользователе</h2>
-            <p>Имя: {name}</p>
-            <p>Возраст: {age}</p>
-    """)
+def register(request):
 
+    scoreArg = request.GET.get("score")
 
-def contact(request):
-    return HttpResponse("Контакты")
+    if scoreArg is None:
+        return HttpResponseNotFound("Not Found")
+
+    try:
+        score = int(scoreArg)
+    except ValueError:
+        raise Http404
+
+    return render(request, 'register.html', {'score': score})

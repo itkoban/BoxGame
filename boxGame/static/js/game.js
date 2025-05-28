@@ -713,7 +713,7 @@ function initResultScreen()
         resultScreenQR.classList.add("resultScreenQR");
 
         let qrcode = new QRCode(resultScreenQR, {
-         text: "https://www.google.ru/?hl=ru",
+         text: document.URL + "register?score=" + score,
          width: 456,
          height: 456,
          colorDark : "#000000",

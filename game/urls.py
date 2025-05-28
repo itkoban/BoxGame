@@ -14,12 +14,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
 from boxGame import views
 
 urlpatterns = [
     path('', views.index),
-    path('about', views.about, kwargs={"name":"Tom", "age": 38}),
-    path('contact', views.contact),
+    path('register', views.register),
 ]

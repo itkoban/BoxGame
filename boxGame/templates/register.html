@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Score Register</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}"/>
+</head>
+<body>
+    <div class="holeContainer">
+
+        <div class="descText">Ваш результат:</div>
+        <div class="scoreText">{{ score }}</div>
+        <div class="inputContainers">
+            <input class="inputBase" type="text" name="phone" placeholder="Телефон">
+            <input class="inputBase" type="text" name="email" placeholder="Эл. почта">
+            <input class="inputBase" type="text" name="fullName" placeholder="ФИО">
+        </div>
+    </div>
+</body>
+</html>
