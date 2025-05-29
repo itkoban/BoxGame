@@ -30,9 +30,12 @@ const BOX_HEIGHT = 128;
 const BOX_WIDTH_HALF = 120;
 const BOX_HEIGHT_HALF = 64;
 
-const MAX_BOX_COUNT = 5;
+const BASE_BOX_SPEED = 150;
+const SPEED_UP_COEFFICIENT = 2;
+
+const MAX_BOX_COUNT = 6;
 const ZONE_WIDTH = 350;
-const START_GAME_TIME = 120;
+const START_GAME_TIME = 10;
 const DELAY_GAME_TIME = 3;
 
 const CENTER_X = document.body.clientWidth / 2;
@@ -59,7 +62,6 @@ let resultScreenArrow = null;
 let secondToStart = DELAY_GAME_TIME;
 
 let currentBoxCount = 0;
-let boxSpeed = 150;
 
 let isSpawnActive = false;
 let lastGameLoopTick = Date.now();
@@ -201,9 +203,11 @@ function moveBoxes( dt ) {
         let clientRect = currentBox.getBoundingClientRect();
         let currentY = clientRect.top;
 
-        let newY = Math.max(currentY, 0) + boxSpeed * dt / 1000;
+        let currentSpeed = BASE_BOX_SPEED * ( SPEED_UP_COEFFICIENT - remainingTime / START_GAME_TIME );
 
-        if ( ( newY + clientRect.height ) > document.body.clientHeight )
+        let newY = Math.max(currentY, 0) + currentSpeed * dt / 1000;
+
+        if ( newY > document.body.clientHeight )
         {
             toDelete.push(currentBox);
         }

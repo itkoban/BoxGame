@@ -17,6 +17,7 @@ body, html {
 .boxBase {
     touch-action: none;
     position: absolute;
+    top: -300px;
     width: 241px;
     height: 128px;
 
