@@ -35,7 +35,7 @@ const SPEED_UP_COEFFICIENT = 2;
 
 const MAX_BOX_COUNT = 6;
 const ZONE_WIDTH = 350;
-const START_GAME_TIME = 10;
+const START_GAME_TIME = 120;
 const DELAY_GAME_TIME = 3;
 
 const CENTER_X = document.body.clientWidth / 2;
