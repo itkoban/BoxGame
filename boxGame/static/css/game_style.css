@@ -17,20 +17,13 @@ body, html {
 .boxBase {
     touch-action: none;
     position: absolute;
-    top: -300px;
-    width: 241px;
-    height: 128px;
-
 }
 
-.boxEmptyContainer {
-    width: 241px;
-    height: 128px;
-}
+.boxEmptyContainer {}
 
-.boxFullContainer {
+.boxFullContainer {}
 
-}
+.catContainer {}
 
 .boxEmpty {
     width: 241px;
@@ -38,10 +31,34 @@ body, html {
     background-image: url("/static/images/empty_box.png");
 }
 
-.boxFull {
+.boxCat {
     width: 241px;
     height: 173px;
-    background-image: url("/static/images/full_box.png");
+    background-image: url("/static/images/cat_box.png");
+}
+
+.boxOzon {
+    width: 249px;
+    height: 195px;
+    background-image: url("/static/images/ozon_box.png");
+}
+
+.boxWild {
+    width: 249px;
+    height: 189px;
+    background-image: url("/static/images/wild_box.png");
+}
+
+.boxFruit {
+    width: 215px;
+    height: 159px;
+    background-image: url("/static/images/fruit_box.png");
+}
+
+.boxVeg {
+    width: 207px;
+    height: 182px;
+    background-image: url("/static/images/veg_box.png");
 }
 
 .scoreCounter {
@@ -296,7 +313,7 @@ body, html {
 .tutorialBoxRight {
     width: 241px;
     height: 173px;
-    background-image: url("/static/images/full_box.png");
+    background-image: url("/static/images/cat_box.png");
     display: block;
     position: absolute;
     top: 382px;

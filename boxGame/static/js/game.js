@@ -30,15 +30,20 @@ const BOX_HEIGHT = 128;
 const BOX_WIDTH_HALF = 120;
 const BOX_HEIGHT_HALF = 64;
 
-const BASE_BOX_SPEED = 150;
-const SPEED_UP_COEFFICIENT = 2;
+const BASE_BOX_SPEED = 200;
+const SPEED_UP_COEFFICIENT = 4;
 
-const MAX_BOX_COUNT = 6;
+const MAX_BOX_COUNT = 10;
+const SPAWN_RATE = 200; //in milliseconds
+const SPAWN_CHANCE = 33; //in percents
+
 const ZONE_WIDTH = 350;
+let RIGHT_ZONE_COORD = document.body.clientWidth - ZONE_WIDTH;
+
 const START_GAME_TIME = 120;
 const DELAY_GAME_TIME = 3;
 
-const CENTER_X = document.body.clientWidth / 2;
+let CENTER_X = document.body.clientWidth / 2;
 
 let dragObject = null;
 let score = 0;
@@ -63,10 +68,14 @@ let secondToStart = DELAY_GAME_TIME;
 
 let currentBoxCount = 0;
 
-let isSpawnActive = false;
 let lastGameLoopTick = Date.now();
 
 let gameLoopId = null;
+
+window.onresize = function(event) {
+    RIGHT_ZONE_COORD = document.body.clientWidth - ZONE_WIDTH;
+    CENTER_X = document.body.clientWidth / 2;
+};
 
 function getRandomInt( min, max )
 {
@@ -126,16 +135,22 @@ function secToMinSecFormat ( seconds )
 }
 
 function trySpawnBox() {
-    if ( !isSpawnActive ) return;
-
-    if ( Math.floor( Math.random() * MAX_BOX_COUNT ) >= currentBoxCount )
+    if ( currentBoxCount >= MAX_BOX_COUNT )
     {
+        setTimeout(trySpawnBox, SPAWN_RATE);
+        return;
+    }
+
+    if ( getRandomInt( 0, 100 ) < SPAWN_CHANCE )
+    {
+        currentBoxCount += 1;
+
         let boxContainer = document.createElement('div');
         boxContainer.classList.add("boxBase");
 
         let degree = getRandomInt( -90, 90 );
 
-        if ( Boolean( Math.round( Math.random() ) ) )
+        if ( getRandomInt( 0, 100 ) < 50 )
         {
             boxContainer.classList.add("boxEmptyContainer");
 
@@ -149,16 +164,41 @@ function trySpawnBox() {
             boxContainer.classList.add("boxFullContainer");
 
             let boxElement = document.createElement('div');
-            boxElement.classList.add("boxFull");
+
+            fullBoxCountRandType = getRandomInt( 0, 100 );
+
+            if ( fullBoxCountRandType < 23 )
+            {
+                boxElement.classList.add("boxOzon");
+
+            }
+            else if ( fullBoxCountRandType < 45 )
+            {
+                boxElement.classList.add("boxWild");
+
+            }
+            else if ( fullBoxCountRandType < 67 )
+            {
+                boxElement.classList.add("boxFruit");
+
+            }
+            else if ( fullBoxCountRandType < 89 )
+            {
+                boxElement.classList.add("boxVeg");
+
+            }
+            else
+            {
+                boxElement.classList.add("boxCat");
+                boxContainer.classList.add("catContainer");
+            }
+
             boxElement.style.transform = "rotate(" + degree + "deg)";
             boxContainer.append(boxElement);
         }
 
         boxContainer.style.left = CENTER_X + ( getRandomInt( -1, 1 ) * BOX_WIDTH ) - BOX_WIDTH_HALF + 'px';
-
-        let startY = Math.sin( degree * ( Math.PI / 180 ) ) * 250;
-
-        currentBoxCount += 1;
+        boxContainer.style.top = '-400px';
 
         boxContainer.ondragstart = () => false;
 
@@ -183,7 +223,7 @@ function trySpawnBox() {
         document.body.append(boxContainer);
     }
 
-    isSpawnActive = false;
+    setTimeout(trySpawnBox, SPAWN_RATE);
 }
 
 function moveBoxes( dt ) {
@@ -203,11 +243,11 @@ function moveBoxes( dt ) {
         let clientRect = currentBox.getBoundingClientRect();
         let currentY = clientRect.top;
 
-        let currentSpeed = BASE_BOX_SPEED * ( SPEED_UP_COEFFICIENT - remainingTime / START_GAME_TIME );
+        let currentSpeed = BASE_BOX_SPEED * ( SPEED_UP_COEFFICIENT - (SPEED_UP_COEFFICIENT - 1) * remainingTime / START_GAME_TIME );
 
-        let newY = Math.max(currentY, 0) + currentSpeed * dt / 1000;
+        let newY = currentY + currentSpeed * dt / 1000;
 
-        if ( newY > document.body.clientHeight )
+        if ( newY > ( document.body.clientHeight + 150 ) )
         {
             toDelete.push(currentBox);
         }
@@ -243,13 +283,21 @@ function checkZones( dt ) {
             {
                 score += 5;
             }
+            else
+            {
+                score = Math.max(0, score - 5);
+            }
         }
-        else if ( (currentX + BOX_WIDTH) > (document.body.clientWidth - ZONE_WIDTH) )
+        else if ( (currentX + BOX_WIDTH) > RIGHT_ZONE_COORD )
         {
             toDelete.push(currentBox)
             if ( currentBox.classList.contains('boxFullContainer') )
             {
-                score += 5;
+                score += currentBox.classList.contains('catContainer') ? 15 : 5;
+            }
+            else
+            {
+                score = Math.max(0, score - 5);
             }
         }
     }
@@ -281,12 +329,6 @@ function onGameTick()
     let currentTick = Date.now();
     let dt = currentTick - lastGameLoopTick;
     lastGameLoopTick = currentTick;
-
-    if ( !isSpawnActive && currentBoxCount != MAX_BOX_COUNT )
-    {
-        setTimeout(trySpawnBox, 500);
-        isSpawnActive = true;
-    }
 
     checkZones(dt)
     moveBoxes(dt);
@@ -413,6 +455,7 @@ function startGameLoop()
     {
         lastGameLoopTick = Date.now();
         gameLoopId = setInterval(onGameTick, 16);
+        trySpawnBox();
     }
 }
 
