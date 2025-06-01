@@ -10,24 +10,20 @@
 </head>
 <body>
     <div class="holeContainer">
-
         <div class="descText">Ваш результат:</div>
         <div class="scoreText">{{ score }}</div>
-        <div class="inputBackground">
-            <input class="inputBase" type="text" name="phone" placeholder="Телефон">
-        </div>
-        <div class="inputBackground">
-            <input class="inputBase" type="text" name="email" placeholder="Эл. почта">
-        </div>
-        <div class="inputBackground">
-            <input class="inputBase" type="text" name="fullName" placeholder="ФИО">
-        </div>
-        <div class="inputBackground">
-            <input class="inputBase" type="text" name="fullName" placeholder="Компания">
-        </div>
-        <div class="inputBackground">
-            <input class="inputBase" type="text" name="fullName" placeholder="Должность">
-        </div>
+        <form class="formSettings" action="/registerData" method="POST">
+            <input class="inputBase" type="tel" name="phone" placeholder="Телефон" autocomplete="on" pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}">
+            <input class="inputBase" type="email" name="email" placeholder="Эл. почта" autocomplete="on">
+            <input class="inputBase" type="text" name="fullName" placeholder="ФИО" autocomplete="on">
+            <input class="inputBase" type="text" name="company" placeholder="Компания" autocomplete="on">
+            <input class="inputBase" type="text" name="position" placeholder="Должность" autocomplete="on">
+            <div class="containerAgreement">
+                <input class="checkboxAgreement" type="checkbox" id="agreement">
+                <a class="textAgreement" href="https://l-pak.ru/uploads/files/document/6825b13f1d146.pdf" target="_blank">Даю согласие на обработку данных</a>
+            </div>
+            <button class="buttonSubmit" type='submit'>Отправить</button>
+        </form>
     </div>
 </body>
 </html>

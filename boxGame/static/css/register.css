@@ -35,24 +35,60 @@
     font-family: 'Hauss';
 }
 
-
-.inputBackground {
-    max-width: 600px;
-    padding-left: 4rem;
-    padding-right: 4rem;
-    margin-bottom: 4rem;
-    border: none;
-    border-radius: 4rem;
-    background-color: #E9E9E9;
+.formSettings {
+    max-width: 900px;
+    width: 100%;
 }
 
 .inputBase {
     display: block;
     width: 100%;
     height: calc(10rem + 2px);
+    max-width: 772px;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    margin-bottom: 4rem;
     border: none;
+    border-radius: 2rem;
     background-color: #E9E9E9;
     text-align: left;
+    font-size: 4rem;
+    font-weight: 400;
+    font-family: 'Hauss';
+    line-height: 1.5;
+}
+
+.checkboxAgreement {
+    display: block;
+    width: calc(4rem + 2px);
+    height: calc(4rem + 2px);
+    margin-right: 4rem;
+}
+
+.containerAgreement {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.textAgreement {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 400;
+    font-family: 'Hauss';
+}
+
+.buttonSubmit {
+    display: block;
+    width: 100%;
+    height: calc(10rem + 2px);
+    border: none;
+    border-radius: 4rem;
+    background-color: #6337F3;
+    text-align: center;
+    color: #FFFFFF;
     font-size: 4rem;
     font-weight: 400;
     font-family: 'Hauss';
