@@ -21,4 +21,5 @@ urlpatterns = [
     path('', views.index),
     path('register', views.register),
     path('registerData', views.registerData),
+    path('getCode', views.getCode)
 ]

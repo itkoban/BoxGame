@@ -12,6 +12,8 @@ document.addEventListener('touchstart', function(event){
   }
 }, false);
 
+let currentHash = null;
+
 let startGameButton = null;
 let startScreen = null;
 
@@ -575,6 +577,12 @@ function deleteStartScreen()
 
 function initStartScreen()
 {
+    fetch(window.location.href + 'getCode')
+        .then(response => response.json())
+        .then(function(data) {
+            currentHash = data['hash'];
+    });
+
     document.body.style.backgroundColor = '#6337F3';
 
     if ( startScreen == null )
@@ -760,13 +768,14 @@ function initResultScreen()
         resultScreenQR.classList.add("resultScreenQR");
 
         let qrcode = new QRCode(resultScreenQR, {
-         text: document.URL + "register?score=" + score,
-         width: 456,
-         height: 456,
-         colorDark : "#000000",
-         colorLight : "#ffffff",
-         correctLevel : QRCode.CorrectLevel.H
+             text: document.URL + "register?score=" + score + "&hash=" + currentHash,
+             width: 456,
+             height: 456,
+             colorDark : "#000000",
+             colorLight : "#ffffff",
+             correctLevel : QRCode.CorrectLevel.H
         });
+
         document.body.append(resultScreenQR);
     }
 
