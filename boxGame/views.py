@@ -28,7 +28,8 @@ def register(request):
     if clientHash in SAVED_SCORE:
         score = SAVED_SCORE[clientHash]
     else:
-        SAVED_SCORE[clientHash] = score
+        if clientHash in REGISTERED_HASES:
+            SAVED_SCORE[clientHash] = score
 
     return render(request, 'register.html', {'score': score, 'hash': clientHash})
 
