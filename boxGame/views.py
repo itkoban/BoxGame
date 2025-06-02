@@ -15,7 +15,7 @@ def register(request):
     scoreArg = request.GET.get("score")
     clientHash = request.GET.get("hash")
 
-    if scoreArg is None or clientHash is None or clientHash not in REGISTERED_HASES:
+    if scoreArg is None or clientHash is None:
         return HttpResponseNotFound("Not Found")
 
     try:
@@ -54,3 +54,13 @@ def getCode(request):
     currentHash = HASH.hexdigest()
     REGISTERED_HASES.append(currentHash)
     return JsonResponse({"hash": currentHash})
+
+
+def checkCode(request):
+    clientHash = request.GET.get("hash")
+
+    isValidated = False
+    if clientHash and clientHash in REGISTERED_HASES:
+        isValidated = True
+
+    return JsonResponse({"isValidated": isValidated})
