@@ -5,6 +5,8 @@ import hashlib
 
 HASH = hashlib.sha256()
 REGISTERED_HASES = []
+SAVED_SCORE = {}
+
 
 def index(request):
     return render(request, "game.html")
@@ -23,6 +25,11 @@ def register(request):
     except ValueError:
         raise Http404
 
+    if clientHash in SAVED_SCORE:
+        score = SAVED_SCORE[clientHash]
+    else:
+        SAVED_SCORE[clientHash] = score
+
     return render(request, 'register.html', {'score': score, 'hash': clientHash})
 
 
@@ -40,6 +47,8 @@ def registerData(request):
 
     if clientHash in REGISTERED_HASES:
         REGISTERED_HASES.remove(clientHash)
+        score = SAVED_SCORE[clientHash]
+        SAVED_SCORE.pop(clientHash)
     else:
         return HttpResponseNotFound("Not Found")
 
