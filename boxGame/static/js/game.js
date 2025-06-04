@@ -494,6 +494,12 @@ function stopGameLoop()
         document.body.append(timeIsUpScreen);
     }
 
+    fetch(window.location.href + 'setScore', {
+      method: 'POST',
+      headers: {"X-CSRFToken": TOKEN,'Content-Type': 'application/json'},
+      body: JSON.stringify({'score': score, 'hash': currentHash})
+    });
+
     setTimeout(stopGame, 3000);
 }
 
@@ -522,7 +528,6 @@ function clearBoxes()
 
 function stopGame()
 {
-
     remainingTime = 0;
 
     clearBoxes();
@@ -768,7 +773,7 @@ function initResultScreen()
         resultScreenQR.classList.add("resultScreenQR");
 
         let qrcode = new QRCode(resultScreenQR, {
-             text: document.URL + "register?score=" + score + "&hash=" + currentHash,
+             text: document.URL + "register?hash=" + currentHash,
              width: 456,
              height: 456,
              colorDark : "#000000",

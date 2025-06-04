@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponseNotFound, HttpResponse, Http404, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse, Http404, JsonResponse
+from .models import ScoreModel
+
 import time
 import hashlib
+import json
+
 
 HASH = hashlib.sha256()
-REGISTERED_HASES = []
-SAVED_SCORE = {}
 
 
 def index(request):
@@ -14,30 +16,24 @@ def index(request):
 
 def register(request):
 
-    scoreArg = request.GET.get("score")
     clientHash = request.GET.get("hash")
 
-    if scoreArg is None or clientHash is None:
+    if clientHash is None:
         return HttpResponseNotFound("Not Found")
 
-    try:
-        score = int(scoreArg)
-    except ValueError:
-        raise Http404
+    scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
 
-    if clientHash in SAVED_SCORE:
-        score = SAVED_SCORE[clientHash]
-    else:
-        if clientHash in REGISTERED_HASES:
-            SAVED_SCORE[clientHash] = score
+    if not scoreInDB:
+        return HttpResponseNotFound("Not Found")
+
+    score = scoreInDB.score
 
     return render(request, 'register.html', {'score': score, 'hash': clientHash})
 
 
 def registerData(request):
     # получаем из строки запроса имя пользователя
-    score = request.POST.get("score", 0)
-    clientHash = request.POST.get("hash", 0)
+    clientHash = request.POST.get("hash", "")
     phone = request.POST.get("phone", "")
     email = request.POST.get("email", "")
     fullName = request.POST.get("fullName", "")
@@ -46,12 +42,14 @@ def registerData(request):
     agreement = request.POST.get("agreement", False)
     langs = request.POST.getlist("languages", ["python"])
 
-    if clientHash in REGISTERED_HASES:
-        REGISTERED_HASES.remove(clientHash)
-        score = SAVED_SCORE[clientHash]
-        SAVED_SCORE.pop(clientHash)
-    else:
+    score = 0
+
+    scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
+    if not scoreInDB:
         return HttpResponseNotFound("Not Found")
+    else:
+        score = scoreInDB.score
+        scoreInDB.delete()
 
     return HttpResponse(f"""
                 <div>score: {score} phone: {phone} email: {email} fullName: {fullName} company: {company} position: {position} agreement: {agreement}</div>
@@ -59,18 +57,33 @@ def registerData(request):
             """)
 
 
+def setScore(request):
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        score = data.get("score", None)
+        clientHash = data.get("hash", None)
+
+        if clientHash is None or score is None:
+            return HttpResponseNotFound("Not Found")
+
+        scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
+
+        if scoreInDB:
+            scoreInDB.score = score
+            scoreInDB.save()
+
+    return JsonResponse({"status": "success"})
+
+
 def getCode(request):
     HASH.update(float.hex(time.time()).encode('utf-8'))
     currentHash = HASH.hexdigest()
-    REGISTERED_HASES.append(currentHash)
+
+    scoreInDB = ScoreModel()
+    scoreInDB.hashCode = currentHash
+    scoreInDB.score = 0
+    scoreInDB.save()
+
     return JsonResponse({"hash": currentHash})
-
-
-def checkCode(request):
-    clientHash = request.GET.get("hash")
-
-    isValidated = False
-    if clientHash and clientHash in REGISTERED_HASES:
-        isValidated = True
-
-    return JsonResponse({"isValidated": isValidated})

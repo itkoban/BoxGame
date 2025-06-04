@@ -2,14 +2,6 @@ const form = document.querySelector('.formSettings');
 const phoneInput = form.phone;
 const hashValue = form.hash.value;
 
-let isValidated = False;
-
-fetch(window.location.origin + + '/checkCode?hash' + hashValue)
-    .then(response => response.json())
-    .then(function(data) {
-        isValidated = data['isValidated'];
-});
-
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -25,9 +17,6 @@ form.addEventListener('submit', (evt) => {
     alert('Номер телефона введён неверно. Пример верной записи: +79997776655');
     return;
   }
-
-  if (!isValidated):
-    return;
 
   form.submit();
 });

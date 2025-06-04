@@ -22,5 +22,5 @@ urlpatterns = [
     path('register', views.register),
     path('registerData', views.registerData),
     path('getCode', views.getCode),
-    path('checkCode', views.checkCode)
+    path('setScore', views.setScore),
 ]

@@ -10,6 +10,11 @@
     <meta charset='utf-8' name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>BoxGame</title>
   </head>
-  <body></body>
+  <body>
+    {% csrf_token %}
+  </body>
+  <script>
+      const TOKEN = '{{csrf_token}}'
+  </script>
   <script src="{% static 'js/game.js' %}"></script>
 </html>
