@@ -21,7 +21,10 @@ def register(request):
     if clientHash is None:
         return HttpResponseNotFound("Not Found")
 
-    scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
+    try:
+        scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
+    except ScoreModel.DoesNotExist:
+        scoreInDB = None
 
     if not scoreInDB:
         return HttpResponseNotFound("Not Found")
@@ -44,7 +47,11 @@ def registerData(request):
 
     score = 0
 
-    scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
+    try:
+        scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
+    except ScoreModel.DoesNotExist:
+        scoreInDB = None
+
     if not scoreInDB:
         return HttpResponseNotFound("Not Found")
     else:
@@ -68,7 +75,10 @@ def setScore(request):
         if clientHash is None or score is None:
             return HttpResponseNotFound("Not Found")
 
-        scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
+        try:
+            scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
+        except ScoreModel.DoesNotExist:
+            scoreInDB = None
 
         if scoreInDB:
             scoreInDB.score = score
