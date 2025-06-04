@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse, Http404, JsonResponse
-from .models import ScoreModel
+from .models import ScoreModel, GamerModel
 
 import time
 import hashlib
@@ -8,6 +8,7 @@ import json
 
 
 HASH = hashlib.sha256()
+KEY_TO_GAMERS = 'yourkey'
 
 
 def index(request):
@@ -43,9 +44,6 @@ def registerData(request):
     company = request.POST.get("company", "")
     position = request.POST.get("position", "")
     agreement = request.POST.get("agreement", False)
-    langs = request.POST.getlist("languages", ["python"])
-
-    score = 0
 
     try:
         scoreInDB = ScoreModel.objects.get(hashCode=clientHash)
@@ -58,10 +56,20 @@ def registerData(request):
         score = scoreInDB.score
         scoreInDB.delete()
 
-    return HttpResponse(f"""
-                <div>score: {score} phone: {phone} email: {email} fullName: {fullName} company: {company} position: {position} agreement: {agreement}</div>
-                <div>Languages: {langs}</div>
-            """)
+    try:
+        gamer = GamerModel.objects.get(phone=phone)
+    except GamerModel.DoesNotExist:
+        gamer = GamerModel()
+        gamer.phone = phone
+        gamer.email = email
+        gamer.fullName = fullName
+        gamer.company = company
+        gamer.position = position
+
+    gamer.score = score
+    gamer.save()
+
+    return render(request, "thanks.html")
 
 
 def setScore(request):
@@ -97,3 +105,22 @@ def getCode(request):
     scoreInDB.save()
 
     return JsonResponse({"hash": currentHash})
+
+def getAllGamers(request):
+    key = request.GET.get("key")
+
+    if key is None or key != KEY_TO_GAMERS:
+        return HttpResponseNotFound("Not Found")
+
+    resultArray = []
+    for gamer in GamerModel.objects.all():
+        resultArray.append({
+            'Phone': gamer.phone,
+            'Score': gamer.score,
+            'email': gamer.email,
+            'FullName': gamer.fullName,
+            'Company': gamer.company,
+            'Position': gamer.position
+        })
+
+    return JsonResponse(resultArray, safe=False)

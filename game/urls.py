@@ -23,4 +23,5 @@ urlpatterns = [
     path('registerData', views.registerData),
     path('getCode', views.getCode),
     path('setScore', views.setScore),
+    path('getAllGamers', views.getAllGamers),
 ]

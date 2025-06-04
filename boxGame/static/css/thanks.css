@@ -1,0 +1,33 @@
+
+@font-face {
+    font-family: 'Hauss';
+    src: url("fonts/ALS_Hauss_Next_VF.ttf") format('truetype');
+}
+
+.textContainer {
+    height: 100%;
+    min-height: 800px;
+    display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.thxText {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 400;
+    font-family: 'Hauss';
+}
+
+.tryText {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 400;
+    font-family: 'Hauss';
+}
