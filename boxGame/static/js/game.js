@@ -137,6 +137,11 @@ function secToMinSecFormat ( seconds )
 }
 
 function trySpawnBox() {
+    if ( remainingTime <= 0 )
+    {
+        return;
+    }
+
     if ( currentBoxCount >= MAX_BOX_COUNT )
     {
         setTimeout(trySpawnBox, SPAWN_RATE);
@@ -490,6 +495,18 @@ function stopGameLoop()
         timeIsUpText.textContent = 'ВРЕМЯ ВЫШЛО';
 
         timeIsUpScreen.append(timeIsUpText);
+
+        let timeIsUpBox = document.createElement('div');
+        timeIsUpBox.classList.add("timeIsUpBox");
+        timeIsUpBox.classList.add("noselect");
+
+        timeIsUpScreen.append(timeIsUpBox);
+
+        let timeIsUpConfetti = document.createElement('div');
+        timeIsUpConfetti.classList.add("timeIsUpConfetti");
+        timeIsUpConfetti.classList.add("noselect");
+
+        timeIsUpScreen.append(timeIsUpConfetti);
 
         document.body.append(timeIsUpScreen);
     }
