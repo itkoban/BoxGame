@@ -36,7 +36,6 @@ def register(request):
 
 
 def registerData(request):
-    # получаем из строки запроса имя пользователя
     clientHash = request.POST.get("hash", "")
     phone = request.POST.get("phone", "")
     email = request.POST.get("email", "")
@@ -57,17 +56,17 @@ def registerData(request):
         scoreInDB.delete()
 
     try:
-        gamer = GamerModel.objects.get(phone=phone)
+        gamerData = GamerModel.objects.get(phone=phone)
     except GamerModel.DoesNotExist:
-        gamer = GamerModel()
-        gamer.phone = phone
-        gamer.email = email
-        gamer.fullName = fullName
-        gamer.company = company
-        gamer.position = position
+        gamerData = GamerModel()
+        gamerData.phone = phone
+        gamerData.email = email
+        gamerData.fullName = fullName
+        gamerData.company = company
+        gamerData.position = position
 
-    gamer.score = score
-    gamer.save()
+    gamerData.score = score
+    gamerData.save()
 
     return render(request, "thanks.html")
 
@@ -106,6 +105,7 @@ def getCode(request):
 
     return JsonResponse({"hash": currentHash})
 
+
 def getAllGamers(request):
     key = request.GET.get("key")
 
@@ -113,14 +113,15 @@ def getAllGamers(request):
         return HttpResponseNotFound("Not Found")
 
     resultArray = []
-    for gamer in GamerModel.objects.all():
+
+    for gamerData in GamerModel.objects.all():
         resultArray.append({
-            'Phone': gamer.phone,
-            'Score': gamer.score,
-            'email': gamer.email,
-            'FullName': gamer.fullName,
-            'Company': gamer.company,
-            'Position': gamer.position
+            'Phone': gamerData.phone,
+            'Score': gamerData.score,
+            'email': gamerData.email,
+            'FullName': gamerData.fullName,
+            'Company': gamerData.company,
+            'Position': gamerData.position
         })
 
     return JsonResponse(resultArray, safe=False, json_dumps_params={'ensure_ascii': False})

@@ -1,27 +1,18 @@
 const form = document.querySelector('.formSettings');
 const phoneInput = form.phone;
-const hashValue = form.hash.value;
-
 
 form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+    evt.preventDefault();
 
-  const phoneValue = phoneInput.value;
+    if (!isValidNumber(phoneValue)) {
+        alert('Номер телефона введён неверно. Пример верной записи: +79997776655');
+        return;
+    }
 
-  if (!phoneValue) {
-    alert('Пожалуйста, заполните все поля');
-    return;
-  }
-
-  if (!isValidNumber(phoneValue)) {
-    alert('Номер телефона введён неверно. Пример верной записи: +79997776655');
-    return;
-  }
-
-  form.submit();
+    form.submit();
 });
 
 function isValidNumber(number) {
-  const pattern = /^((\+7|7|8)+([0-9]){10})$/;
-  return pattern.test(number);
+    const pattern = /^((\+7)+([0-9]){10})$/;
+    return pattern.test(phoneInput.value);
 }
