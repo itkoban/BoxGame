@@ -33,11 +33,11 @@ const BOX_WIDTH_HALF = 120;
 const BOX_HEIGHT_HALF = 64;
 
 const BASE_BOX_SPEED = 200;
-const SPEED_UP_COEFFICIENT = 4;
+const SPEED_UP_COEFFICIENT = 5;
 
-const MAX_BOX_COUNT = 10;
-const SPAWN_RATE = 200; //in milliseconds
-const SPAWN_CHANCE = 33; //in percents
+const MAX_BOX_COUNT = 12;
+const SPAWN_RATE = 150; //in milliseconds
+const SPAWN_CHANCE = 45; //in percents
 
 const ZONE_WIDTH = 350;
 let RIGHT_ZONE_COORD = document.body.clientWidth - ZONE_WIDTH;
@@ -73,6 +73,11 @@ let currentBoxCount = 0;
 let lastGameLoopTick = Date.now();
 
 let gameLoopId = null;
+
+let goToStartScreenLoopId = null;
+let toStartScreenTimeCounter = null;
+let goToStartScreenRemainingTime = 0;
+const TIME_TO_START_SCREEN = 30;
 
 window.onresize = function(event) {
     RIGHT_ZONE_COORD = document.body.clientWidth - ZONE_WIDTH;
@@ -806,7 +811,7 @@ function initResultScreen()
         resultScreenHint = document.createElement('div');
         resultScreenHint.classList.add("resultScreenHint");
 
-        resultScreenHint.innerHTML = 'Для <span style="color: #6337F3; font-weight: 720;">сохранения результата</span><br/>и <span style="color: #6337F3; font-weight: 720;">получения призов</span><br/>заполните форму'
+        resultScreenHint.innerHTML = 'Для <span style="color: #6337F3; font-weight: 720;">сохранения результата</span><br/>и <span style="color: #6337F3; font-weight: 720;">шанса выйграть ценные призы</span> — заполните форму'
 
         document.body.append(resultScreenHint);
     }
@@ -818,10 +823,60 @@ function initResultScreen()
 
         document.body.append(resultScreenArrow);
     }
+
+    if ( goToStartScreenLoopId == null )
+    {
+        goToStartScreenLoopId = setInterval(onGoToStartScreenTick, 1000);
+        goToStartScreenRemainingTime = TIME_TO_START_SCREEN;
+    }
+}
+
+function onGoToStartScreenTick()
+{
+    goToStartScreenRemainingTime -= 1;
+
+    goToStartScreenRemainingTime = Math.max(0, goToStartScreenRemainingTime);
+
+    if ( goToStartScreenRemainingTime < 16 && toStartScreenTimeCounter == null )
+    {
+        toStartScreenTimeCounter = document.createElement('div');
+
+        toStartScreenTimeCounter.classList.add("toStartScreenTimeCounter");
+        toStartScreenTimeCounter.classList.add("noselect");
+        toStartScreenTimeCounter.textContent = "Переключаем на главную через: " + secToMinSecFormat( goToStartScreenRemainingTime );
+
+        resultScreenStartGameButton.style.top = "935px";
+
+        document.body.append(toStartScreenTimeCounter);
+
+    }
+
+    if ( toStartScreenTimeCounter != null)
+    {
+        toStartScreenTimeCounter.textContent = "Переключаем на главную через: " + secToMinSecFormat( goToStartScreenRemainingTime );
+    }
+
+    if ( goToStartScreenRemainingTime == 0 )
+    {
+        moveToStartScreen();
+    }
 }
 
 function deleteResultScreen()
 {
+     if ( goToStartScreenLoopId != null )
+    {
+        clearInterval(goToStartScreenLoopId);
+        goToStartScreenLoopId = null;
+        goToStartScreenRemainingTime = 0;
+    }
+
+    if ( toStartScreenTimeCounter != null )
+    {
+        toStartScreenTimeCounter.remove();
+        toStartScreenTimeCounter = null;
+    }
+
     resultScoreText.remove();
     resultScoreText = null;
 
