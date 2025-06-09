@@ -19,10 +19,6 @@ let startScreen = null;
 
 let tutorialBoxRight = null;
 let tutorialBoxLeft = null;
-let tutorialTextRight = null;
-let tutorialTextLeft = null;
-let tutorialArrowRight = null;
-let tutorialArrowLeft = null;
 let tutorialStartButton = null;
 let tutorialText = null;
 let tutorialScreen = null;
@@ -83,6 +79,8 @@ window.onresize = function(event) {
     RIGHT_ZONE_COORD = document.body.clientWidth - ZONE_WIDTH;
     CENTER_X = document.body.clientWidth / 2;
 };
+
+var myAudio = document.getElementById("gameplayMusic");
 
 function getRandomInt( min, max )
 {
@@ -463,6 +461,8 @@ function countTimeToStartGame() {
 
 function startGameLoop()
 {
+    myAudio.play();
+
     if ( gameLoopId == null )
     {
         lastGameLoopTick = Date.now();
@@ -473,6 +473,9 @@ function startGameLoop()
 
 function stopGameLoop()
 {
+    myAudio.pause();
+    myAudio.currentTime = 0;
+
     remainingTime = 0;
 
     if ( gameLoopId != null )
@@ -645,18 +648,6 @@ function deleteTutorialScreen()
     tutorialBoxLeft.remove();
     tutorialBoxLeft = null;
 
-    tutorialTextRight.remove();
-    tutorialTextRight = null;
-
-    tutorialTextLeft.remove();
-    tutorialTextLeft = null;
-
-    tutorialArrowRight.remove();
-    tutorialArrowRight = null;
-
-    tutorialArrowLeft.remove();
-    tutorialArrowLeft = null;
-
     tutorialStartButton.remove();
     tutorialStartButton = null;
 
@@ -693,40 +684,6 @@ function initTutorialScreen()
             tutorialStartButton.onclick = startGame;
 
             tutorialScreen.append(tutorialStartButton);
-        }
-
-        if ( tutorialArrowLeft == null )
-        {
-            tutorialArrowLeft = document.createElement('div');
-            tutorialArrowLeft.classList.add("tutorialArrowLeft");
-
-            tutorialScreen.append(tutorialArrowLeft);
-        }
-
-        if ( tutorialArrowRight == null )
-        {
-            tutorialArrowRight = document.createElement('div');
-            tutorialArrowRight.classList.add("tutorialArrowRight");
-
-            tutorialScreen.append(tutorialArrowRight);
-        }
-
-         if ( tutorialTextLeft == null )
-        {
-            tutorialTextLeft = document.createElement('div');
-            tutorialTextLeft.classList.add("tutorialTextLeft");
-            tutorialTextLeft.textContent = 'пустые коробки';
-
-            tutorialScreen.append(tutorialTextLeft);
-        }
-
-        if ( tutorialTextRight == null )
-        {
-            tutorialTextRight = document.createElement('div');
-            tutorialTextRight.classList.add("tutorialTextRight");
-            tutorialTextRight.textContent = 'полные коробки';
-
-            tutorialScreen.append(tutorialTextRight);
         }
 
         if ( tutorialBoxLeft == null )

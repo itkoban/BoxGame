@@ -269,6 +269,7 @@ body, html {
 .tutorialScreen {
     width: 100%;
     height: 100%;
+    background-image: url("/static/images/tutorial.png");
 }
 
 .tutorialText {
@@ -278,9 +279,9 @@ body, html {
     width: 1180px;
     height: 128px;
     text-align: center;
-    top: 94px;
+    top: 45px;
     left: 369px;
-    color: #ffffff;
+    color: #000000;
     font-weight: 720;
     font-family: 'Hauss';
 }
@@ -302,71 +303,21 @@ body, html {
     font-family: 'Hauss';
 }
 
-.tutorialArrowLeft {
-    width: 506px;
-    height: 82px;
-    background-image: url("/static/images/arrow_left.png");
-    display: block;
-    position: absolute;
-    top: 673px;
-    left: 157px;
-    transform: translate(0, -50%);
-}
-
-.tutorialArrowRight {
-    width: 506px;
-    height: 82px;
-    background-image: url("/static/images/arrow_right.png");
-    display: block;
-    position: absolute;
-    top: 673px;
-    left: 1229px;
-    transform: translate(0, -50%);
-}
-
-.tutorialTextLeft {
-    width: 314px;
-    height: 73px;
-    display: block;
-    position: absolute;
-    top: 577px;
-    left: 343px;
-    text-align: right;
-    color: #ffffff;
-    font-size: 40px;
-    font-weight: 720;
-    font-family: 'Hauss';
-}
-
-.tutorialTextRight {
-    width: 321px;
-    height: 73px;
-    display: block;
-    position: absolute;
-    top: 577px;
-    left: 1229px;
-    color: #ffffff;
-    text-align: left;
-    font-size: 40px;
-    font-weight: 720;
-    font-family: 'Hauss';
-}
-
 .tutorialBoxLeft {
-    width: 241px;
+    width: 249px;
     height: 126px;
     background-image: url("/static/images/empty_box.png");
     display: block;
     position: absolute;
-    top: 427px;
-    left: 416px;
+    top: 577px;
+    left: 516px;
     transition: all 0.5s ease;
     animation: tutorialBoxLeft 3s linear infinite;
 }
 
 @keyframes tutorialBoxLeft {
     to {
-        transform: translate(-300px, 0px);
+        transform: translate(-200px, 0px);
     }
 }
 
@@ -376,15 +327,15 @@ body, html {
     background-image: url("/static/images/cat_box.png");
     display: block;
     position: absolute;
-    top: 382px;
-    left: 1229px;
+    top: 512px;
+    left: 1129px;
     transition: all 0.5s ease;
     animation: tutorialBoxRight 3s linear infinite;
 }
 
 @keyframes tutorialBoxRight {
   to {
-    transform: translate(300px, 0px);
+    transform: translate(200px, 0px);
   }
 }
 
