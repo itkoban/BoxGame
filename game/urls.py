@@ -19,6 +19,7 @@ from boxGame import views
 
 urlpatterns = [
     path('', views.index),
+    path('tryLogin', views.tryLogin),
     path('register', views.register),
     path('registerData', views.registerData),
     path('getCode', views.getCode),

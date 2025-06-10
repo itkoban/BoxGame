@@ -10,8 +10,24 @@ import json
 HASH = hashlib.sha256()
 KEY_TO_GAMERS = 'yourkey'
 
+LOGIN_GAME = "gamer"
+PASSWORD_GAME = "gamer"
+
 
 def index(request):
+    return render(request, "gameLogin.html")
+
+
+def tryLogin(request):
+    if request.method != "POST":
+        return HttpResponseNotFound("Not Found")
+
+    login = request.POST.get("login", "")
+    password = request.POST.get("password", "")
+
+    if login != LOGIN_GAME or password != PASSWORD_GAME:
+        return HttpResponseNotFound("Not Found")
+
     return render(request, "game.html")
 
 
@@ -36,6 +52,9 @@ def register(request):
 
 
 def registerData(request):
+    if request.method != "POST":
+        return HttpResponseNotFound("Not Found")
+
     clientHash = request.POST.get("hash", "")
     phone = request.POST.get("phone", "")
     email = request.POST.get("email", "")

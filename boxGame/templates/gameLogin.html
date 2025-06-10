@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LoginGame</title>
+</head>
+<body>
+    <form class="formSettings" action="/tryLogin" method="POST">
+        {% csrf_token %}
+        <input required type="text" name="login" placeholder="login">
+        <input required type="password" name="password" placeholder="password">
+        <button type='submit'>Log In</button>
+    </form>
+</body>
+</html>
