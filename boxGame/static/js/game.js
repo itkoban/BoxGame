@@ -524,7 +524,7 @@ function stopGameLoop()
         document.body.append(timeIsUpScreen);
     }
 
-    fetch(window.location.href + 'setScore', {
+    fetch(window.location.origin + '/setScore', {
       method: 'POST',
       headers: {"X-CSRFToken": TOKEN,'Content-Type': 'application/json'},
       body: JSON.stringify({'score': score, 'hash': currentHash})
