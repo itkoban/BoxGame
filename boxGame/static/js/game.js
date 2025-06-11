@@ -177,24 +177,29 @@ function trySpawnBox() {
 
             fullBoxCountRandType = getRandomInt( 0, 100 );
 
-            if ( fullBoxCountRandType < 23 )
+            if ( fullBoxCountRandType < 18 )
             {
                 boxElement.classList.add("boxOzon");
 
             }
-            else if ( fullBoxCountRandType < 45 )
+            else if ( fullBoxCountRandType < 38 )
             {
                 boxElement.classList.add("boxWild");
 
             }
-            else if ( fullBoxCountRandType < 67 )
+            else if ( fullBoxCountRandType < 54 )
             {
                 boxElement.classList.add("boxFruit");
 
             }
-            else if ( fullBoxCountRandType < 89 )
+            else if ( fullBoxCountRandType < 72 )
             {
                 boxElement.classList.add("boxVeg");
+
+            }
+            else if ( fullBoxCountRandType < 90 )
+            {
+                boxElement.classList.add("boxEats");
 
             }
             else
