@@ -612,7 +612,7 @@ function deleteStartScreen()
 
 function initStartScreen()
 {
-    fetch(window.location.href + 'getCode')
+    fetch(window.location.origin + '/getCode')
         .then(response => response.json())
         .then(function(data) {
             currentHash = data['hash'];
@@ -757,7 +757,7 @@ function initResultScreen()
         resultScreenQR.classList.add("resultScreenQR");
 
         let qrcode = new QRCode(resultScreenQR, {
-             text: document.URL + "register?hash=" + currentHash,
+             text: window.location.origin + "/register?hash=" + currentHash,
              width: 456,
              height: 456,
              colorDark : "#000000",
@@ -773,7 +773,7 @@ function initResultScreen()
         resultScreenHint = document.createElement('div');
         resultScreenHint.classList.add("resultScreenHint");
 
-        resultScreenHint.innerHTML = 'Для <span style="color: #6337F3; font-weight: 720;">сохранения результата</span><br/>и <span style="color: #6337F3; font-weight: 720;">шанса выйграть ценные призы</span> — заполните форму'
+        resultScreenHint.innerHTML = 'Для <span style="color: #6337F3; font-weight: 720;">сохранения результата</span><br/>и <span style="color: #6337F3; font-weight: 720;">шанса выиграть ценные призы</span> — заполните форму'
 
         document.body.append(resultScreenHint);
     }
