@@ -15,6 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 from boxGame import views
 
 urlpatterns = [
@@ -26,3 +28,5 @@ urlpatterns = [
     path('setScore', views.setScore),
     path('getAllGamers', views.getAllGamers),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
