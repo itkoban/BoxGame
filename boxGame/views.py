@@ -84,7 +84,9 @@ def registerData(request):
         gamerData.company = company
         gamerData.position = position
 
-    gamerData.score = max(score, gamerData.score)
+    oldScore = gamerData.score if gamerData.score else 0
+
+    gamerData.score = max(score, oldScore)
     gamerData.save()
 
     return render(request, "thanks.html")
