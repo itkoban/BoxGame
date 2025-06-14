@@ -30,8 +30,6 @@ const COMPLIMENTS_SCORES = [
 
 let currentComplimentID = 0;
 
-console.log(COMPLIMENTS.length);
-
 let currentHash = null;
 
 let startGameButton = null;
@@ -105,7 +103,8 @@ window.onresize = function(event) {
     CENTER_X = document.body.clientWidth / 2;
 };
 
-var myAudio = document.getElementById("gameplayMusic");
+var gameplayMusic = document.getElementById("gameplayMusic");
+var catMeow = document.getElementById("catMeow");
 
 function getRandomInt( min, max )
 {
@@ -181,11 +180,33 @@ function createCatHi()
 
     document.body.append(catHiElement);
 
+    setTimeout(meowCat, 300);
+
     setTimeout(deleteCatHi, 3000);
+}
+
+function meowCat()
+{
+    if ( remainingTime <= 0 )
+    {
+        return;
+    }
+
+    if ( catHiElement == null )
+    {
+        return;
+    }
+
+    gameplayMusic.volume = 0.7;
+    catMeow.play();
 }
 
 function deleteCatHi()
 {
+    catMeow.pause();
+    catMeow.currentTime = 0;
+    gameplayMusic.volume = 1.0;
+
     if ( catHiElement != null )
     {
         catHiElement.remove();
@@ -429,7 +450,7 @@ function checkZones( dt )
         }
     }
 
-    if ( countedCats == 3 )
+    if ( countedCats == 1 )
     {
         countedCats = 0;
 
@@ -553,8 +574,6 @@ function startGame()
 
         setTimeout(countTimeToStartGame, 1000);
     }
-
-
 }
 
 function countTimeToStartGame()
@@ -583,7 +602,7 @@ function countTimeToStartGame()
 
 function startGameLoop()
 {
-    myAudio.play();
+    gameplayMusic.play();
 
     if ( gameLoopId == null )
     {
@@ -595,8 +614,8 @@ function startGameLoop()
 
 function stopGameLoop()
 {
-    myAudio.pause();
-    myAudio.currentTime = 0;
+    gameplayMusic.pause();
+    gameplayMusic.currentTime = 0;
 
     remainingTime = 0;
 
