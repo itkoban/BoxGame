@@ -450,7 +450,7 @@ function checkZones( dt )
         }
     }
 
-    if ( countedCats == 1 )
+    if ( countedCats == 3 )
     {
         countedCats = 0;
 
