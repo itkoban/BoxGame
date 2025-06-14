@@ -213,6 +213,7 @@ function createCompliment()
 
     let complimentText = document.createElement('div');
     complimentText.classList.add("complimentText");
+    complimentText.classList.add("noselect");
     complimentText.textContent = COMPLIMENTS[currentComplimentID];
 
     complimentElement.append(complimentText);
