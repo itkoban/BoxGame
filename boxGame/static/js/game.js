@@ -12,6 +12,26 @@ document.addEventListener('touchstart', function(event){
   }
 }, false);
 
+const COMPLIMENTS = [
+    "ПРЕКРАСНЫЙ СТАРТ!",
+    "ОТЛИЧНЫЙ ТЕМП!",
+    "ВЕЛИКОЛЕПНО!",
+    "МОЩНЫЙ РЕЗУЛЬТАТ!",
+    "ЭТО ТОП!"
+];
+
+const COMPLIMENTS_SCORES = [
+    100,
+    200,
+    400,
+    800,
+    1000
+];
+
+let currentComplimentID = 0;
+
+console.log(COMPLIMENTS.length);
+
 let currentHash = null;
 
 let startGameButton = null;
@@ -55,6 +75,7 @@ let counterToStart = null;
 let textFullBox = null;
 let textEmptyBox = null;
 let catHiElement = null;
+let complimentContainer = null;
 
 let timeIsUpScreen = null;
 
@@ -169,6 +190,46 @@ function deleteCatHi()
     {
         catHiElement.remove();
         catHiElement = null;
+    }
+}
+
+function createCompliment()
+{
+    if ( remainingTime <= 0 )
+    {
+        return;
+    }
+
+    if ( complimentContainer != null )
+    {
+        return;
+    }
+
+    complimentContainer = document.createElement('div');
+    complimentContainer.classList.add("complimentContainer");
+
+    let complimentElement = document.createElement('div');
+    complimentElement.classList.add("complimentElement");
+
+    let complimentText = document.createElement('div');
+    complimentText.classList.add("complimentText");
+    complimentText.textContent = COMPLIMENTS[currentComplimentID];
+
+    complimentElement.append(complimentText);
+
+    complimentContainer.append(complimentElement);
+
+    document.body.append(complimentContainer);
+
+    setTimeout(deleteCompliment, 5000);
+}
+
+function deleteCompliment()
+{
+    if ( complimentContainer != null )
+    {
+        complimentContainer.remove();
+        complimentContainer = null;
     }
 }
 
@@ -359,6 +420,12 @@ function checkZones( dt )
     {
         score = newScore;
         scoreCounter.textContent = getScoreInStr();
+
+        if ( score >= COMPLIMENTS_SCORES[currentComplimentID] )
+        {
+            createCompliment();
+            currentComplimentID += 1;
+        }
     }
 
     if ( countedCats == 3 )
@@ -540,6 +607,7 @@ function stopGameLoop()
 
     clearBoxes();
     deleteCatHi();
+    deleteCompliment();
 
     scoreCounter.style.opacity = 0.4;
     scoreBox.style.opacity = 0.4;
@@ -609,6 +677,7 @@ function clearBoxes()
 function stopGame()
 {
     remainingTime = 0;
+    currentComplimentID = 0;
 
     clearBoxes();
 
