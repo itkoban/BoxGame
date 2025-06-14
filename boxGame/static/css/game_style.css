@@ -26,7 +26,7 @@ body, html {
 .catContainer {}
 
 .boxEmpty {
-    width: 241px;
+    width: 249px;
     height: 126px;
     background-image: url("/static/images/empty_box.png");
 }
@@ -90,6 +90,32 @@ body, html {
     position: absolute;
     top: 58px;
     left: 85px;
+}
+
+.catHiElement {
+    width: 318px;
+    height: 290px;
+    background-image: url("/static/images/cat_hi.png");
+    display: block;
+    position: absolute;
+    top: 790px;
+    left: 1602px;
+    animation: catHiElementAnimation 2s linear forwards;
+}
+
+@keyframes catHiElementAnimation {
+    0% {
+        transform: translate(318px, 0px);
+    }
+    10% {
+        transform: translate(0px, 0px);
+    }
+    90% {
+        transform: translate(0px, 0px);
+    }
+    100% {
+        transform: translate(318px, 0px);
+    }
 }
 
 .timeCounter {
@@ -356,6 +382,19 @@ body, html {
     font-size: 140px;
     font-weight: 850;
     font-family: 'Hauss';
+    animation: resultScoreAnimation 3s linear infinite;
+}
+
+@keyframes resultScoreAnimation {
+    0% {
+        transform:scale(0.9);
+    }
+    50% {
+        transform:scale(1.2);
+    }
+    100% {
+        transform:scale(0.9);
+    }
 }
 
 .resultTryText {
@@ -434,4 +473,16 @@ body, html {
     position: absolute;
     top: 600px;
     left: 720px;
+}
+
+.resultScreenClose {
+    width: 50px;
+    height: 50px;
+    background-image: url("/static/images/result_close.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    display: block;
+    position: absolute;
+    top: 50px;
+    left: 1850px;
 }

@@ -46,6 +46,7 @@ let CENTER_X = document.body.clientWidth / 2;
 let dragObject = null;
 let score = 0;
 let remainingTime = 0;
+let countedCats = 0;
 
 let scoreCounter = null;
 let scoreBox = null;
@@ -53,6 +54,8 @@ let timeCounter = null;
 let counterToStart = null;
 let textFullBox = null;
 let textEmptyBox = null;
+let catHiElement = null;
+
 let timeIsUpScreen = null;
 
 let resultScoreText = null;
@@ -61,6 +64,7 @@ let resultScreenStartGameButton = null;
 let resultScreenQR = null;
 let resultScreenHint = null;
 let resultScreenArrow = null;
+let resultScreenClose = null;
 
 let secondToStart = DELAY_GAME_TIME;
 
@@ -139,7 +143,37 @@ function secToMinSecFormat ( seconds )
     return minsStr + ':' + secsStr;
 }
 
-function trySpawnBox() {
+function createCatHi()
+{
+    if ( remainingTime <= 0 )
+    {
+        return;
+    }
+
+    if ( catHiElement != null )
+    {
+        return;
+    }
+
+    catHiElement = document.createElement('div');
+    catHiElement.classList.add("catHiElement");
+
+    document.body.append(catHiElement);
+
+    setTimeout(deleteCatHi, 3000);
+}
+
+function deleteCatHi()
+{
+    if ( catHiElement != null )
+    {
+        catHiElement.remove();
+        catHiElement = null;
+    }
+}
+
+function trySpawnBox()
+{
     if ( remainingTime <= 0 )
     {
         return;
@@ -177,27 +211,27 @@ function trySpawnBox() {
 
             fullBoxCountRandType = getRandomInt( 0, 100 );
 
-            if ( fullBoxCountRandType < 18 )
+            if ( fullBoxCountRandType < 19 )
             {
                 boxElement.classList.add("boxOzon");
 
             }
-            else if ( fullBoxCountRandType < 38 )
+            else if ( fullBoxCountRandType < 40 )
             {
                 boxElement.classList.add("boxWild");
 
             }
-            else if ( fullBoxCountRandType < 54 )
+            else if ( fullBoxCountRandType < 57 )
             {
                 boxElement.classList.add("boxFruit");
 
             }
-            else if ( fullBoxCountRandType < 72 )
+            else if ( fullBoxCountRandType < 76 )
             {
                 boxElement.classList.add("boxVeg");
 
             }
-            else if ( fullBoxCountRandType < 90 )
+            else if ( fullBoxCountRandType < 95 )
             {
                 boxElement.classList.add("boxEats");
 
@@ -241,8 +275,8 @@ function trySpawnBox() {
     setTimeout(trySpawnBox, SPAWN_RATE);
 }
 
-function moveBoxes( dt ) {
-
+function moveBoxes( dt )
+{
     let toDelete = []
 
     const collection = document.getElementsByClassName("boxBase");
@@ -277,11 +311,13 @@ function moveBoxes( dt ) {
     }
 }
 
-function checkZones( dt ) {
-
+function checkZones( dt )
+{
     let toDelete = []
 
     const collection = document.getElementsByClassName("boxBase");
+
+    let newScore = score;
 
     if ( collection.length == 0 ) return;
 
@@ -296,11 +332,11 @@ function checkZones( dt ) {
             toDelete.push(currentBox)
             if ( currentBox.classList.contains('boxEmptyContainer') )
             {
-                score += 5;
+                newScore += 5;
             }
             else
             {
-                score = Math.max(0, score - 5);
+                newScore = Math.max(0, score - 5);
             }
         }
         else if ( (currentX + BOX_WIDTH) > RIGHT_ZONE_COORD )
@@ -308,16 +344,29 @@ function checkZones( dt ) {
             toDelete.push(currentBox)
             if ( currentBox.classList.contains('boxFullContainer') )
             {
-                score += currentBox.classList.contains('catContainer') ? 15 : 5;
+                let isCat = currentBox.classList.contains('catContainer');
+                countedCats += isCat ? 1 : 0;
+                newScore += isCat ? 15 : 5;
             }
             else
             {
-                score = Math.max(0, score - 5);
+                newScore = Math.max(0, score - 5);
             }
         }
     }
 
-    scoreCounter.textContent = getScoreInStr();
+    if ( newScore != score )
+    {
+        score = newScore;
+        scoreCounter.textContent = getScoreInStr();
+    }
+
+    if ( countedCats == 3 )
+    {
+        countedCats = 0;
+
+        setTimeout(createCatHi, 1000);
+    }
 
     for ( let i = 0; i < toDelete.length; i++ )
     {
@@ -363,6 +412,7 @@ function startGame()
 {
     remainingTime = START_GAME_TIME;
     score = 0;
+    countedCats = 0;
 
     deleteTutorialScreen();
 
@@ -439,7 +489,8 @@ function startGame()
 
 }
 
-function countTimeToStartGame() {
+function countTimeToStartGame()
+{
     secondToStart -= 1;
 
     if ( secondToStart == 0 )
@@ -461,8 +512,6 @@ function countTimeToStartGame() {
         setTimeout(countTimeToStartGame, 1000);
     }
 }
-
-
 
 function startGameLoop()
 {
@@ -490,6 +539,7 @@ function stopGameLoop()
     }
 
     clearBoxes();
+    deleteCatHi();
 
     scoreCounter.style.opacity = 0.4;
     scoreBox.style.opacity = 0.4;
@@ -751,6 +801,15 @@ function initResultScreen()
         document.body.append(resultScreenStartGameButton);
     }
 
+    if ( resultScreenClose == null )
+    {
+        resultScreenClose = document.createElement('div');
+        resultScreenClose.classList.add("resultScreenClose");
+        resultScreenClose.onclick = moveToStartScreen;
+
+        document.body.append(resultScreenClose);
+    }
+
     if ( resultScreenQR == null )
     {
         resultScreenQR = document.createElement('div');
@@ -847,6 +906,9 @@ function deleteResultScreen()
 
     resultScreenStartGameButton.remove();
     resultScreenStartGameButton = null;
+
+    resultScreenClose.remove();
+    resultScreenClose = null;
 
     resultScreenQR.remove();
     resultScreenQR = null;
